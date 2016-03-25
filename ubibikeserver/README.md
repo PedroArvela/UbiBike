@@ -22,4 +22,4 @@ http://localhost:8080/ubibikeserver/
 
 Create and edit classes according to the required endpoints.
 
-If in doubt view the [Jersey Getting Started Tutorial](http://www.vogella.com/tutorials/REST/article.html#firstjersey_class).
+If in doubt view the [Jersey Getting Started Tutorial](http://www.vogella.com/tutorials/REST/article.html#firstjersey_class) and the [Jersey Documentation](https://jersey.java.net/apidocs/latest/jersey/index.html).
