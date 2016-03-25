@@ -1,4 +1,4 @@
-package pt.tecnico.cmu;
+package pt.tecnico.cmu.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
