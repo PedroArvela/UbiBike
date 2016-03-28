@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cmu.tecnico.ubibikemobile">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StationsList"
+            android:label="@string/title_activity_stations_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BookBycicle"
+            android:label="@string/title_activity_book_bycicle"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CyclistsList"
+            android:label="@string/title_activity_cyclists_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CyclistInteractionMenu"
+            android:label="@string/title_activity_cyclist_interaction_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SendPoints"
+            android:label="@string/title_activity_send_points"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SendMessage"
+            android:label="@string/title_activity_send_message"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>
