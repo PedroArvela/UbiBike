@@ -12,8 +12,10 @@
     tools:context="cmu.tecnico.ubibikemobile.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/button_book_stations" />
+
 </RelativeLayout>

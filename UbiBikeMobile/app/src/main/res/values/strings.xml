@@ -8,4 +8,5 @@
     <string name="title_activity_cyclist_interaction_menu">CyclistInteractionMenu</string>
     <string name="title_activity_send_points">SendPoints</string>
     <string name="title_activity_send_message">SendMessage</string>
+    <string name="button_book_stations">BookBycicle</string>
 </resources>
