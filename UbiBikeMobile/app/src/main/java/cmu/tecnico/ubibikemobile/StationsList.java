@@ -27,7 +27,7 @@ public class StationsList extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.stations);
         stationNames = GetStationList();
-        adapter = new ArrayAdapter<String>(this,R.layout.single_list_item, R.id.station,stationNames);
+        adapter = new ArrayAdapter<String>(this,R.layout.single_list_item, R.id.list_item, stationNames);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

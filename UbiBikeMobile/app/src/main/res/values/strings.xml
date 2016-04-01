@@ -9,4 +9,7 @@
     <string name="title_activity_send_points">SendPoints</string>
     <string name="title_activity_send_message">SendMessage</string>
     <string name="button_book_stations">BookBycicle</string>
+    <string name="button_cyclist">Cyclists Nearby</string>
+    <string name="button_send_message">Send Message</string>
+    <string name="button_send_points">Send Points</string>
 </resources>

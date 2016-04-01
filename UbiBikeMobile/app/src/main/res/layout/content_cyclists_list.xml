@@ -12,4 +12,11 @@
     tools:context="cmu.tecnico.ubibikemobile.CyclistsList"
     tools:showIn="@layout/activity_cyclists_list">
 
+    <ListView
+        android:id="@+id/cyclists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+
 </RelativeLayout>
