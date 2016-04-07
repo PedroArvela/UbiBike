@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class SendPoints extends AppCompatActivity {
 
     Intent myIntent;
     Button button;
-    EditText pointsField;
+    NumberPicker pointsField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,23 @@ public class SendPoints extends AppCompatActivity {
                 SendPoints.this.startActivity(myIntent);
             }
         });
+        button.setEnabled(false);
 
-        pointsField = (EditText) findViewById(R.id.points_value);
+        pointsField = (NumberPicker) findViewById(R.id.points_value);
+        pointsField.setWrapSelectorWheel(false);
+        pointsField.setMaxValue(10);
+        pointsField.setMinValue(0);
 
-
+        pointsField.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if(newVal == 0)
+                    button.setEnabled(false);
+                else
+                    if(oldVal == 0)
+                        button.setEnabled(true);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
