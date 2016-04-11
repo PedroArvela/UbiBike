@@ -2,10 +2,12 @@ package pt.tecnico.cmu.resources;
 
 import java.net.URI;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -38,5 +40,16 @@ public class UserResource {
 		} else {
 			return Response.status(Status.FORBIDDEN).build();
 		}
+	}
+
+	@GET
+	public Response login(@QueryParam("username") String username) {
+		UbiManager manager = UbiManager.getInstance();
+
+		if (!manager.userExists(username)) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+
+		return Response.ok(manager.getUser(username), MediaType.APPLICATION_JSON).build();
 	}
 }
