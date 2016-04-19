@@ -34,4 +34,15 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp"
         android:hint="New Text" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/SubmitMsg"
+        android:layout_alignTop="@+id/new_sms"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="44dp" />
 </RelativeLayout>

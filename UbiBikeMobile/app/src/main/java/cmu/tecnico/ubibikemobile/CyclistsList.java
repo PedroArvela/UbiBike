@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,6 +19,7 @@ public class CyclistsList extends AppCompatActivity {
     ArrayList<String> cyclistsNames;
     ArrayAdapter adapter;
     ListView listView;
+    static String CYCLER_NAME = "cyclerName";
 
 
     @Override
@@ -35,6 +38,8 @@ public class CyclistsList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(CyclistsList.this, CyclistInteractionMenu.class);
+                String selected = ((TextView) view.findViewById(R.id.list_item)).getText().toString();
+                intent.putExtra(CYCLER_NAME, selected);
                 startActivity(intent);
             }
         });

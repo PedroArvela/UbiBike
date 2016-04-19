@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SendPoints extends AppCompatActivity {
 
     Intent myIntent;
     Button button;
     NumberPicker pointsField;
+    //static String CYCLER_NAME = "cyclerName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,11 @@ public class SendPoints extends AppCompatActivity {
         setContentView(R.layout.activity_send_points);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent prevIntent = getIntent();
+        String cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
+        Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
+        toast.show();
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
