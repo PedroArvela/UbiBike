@@ -12,4 +12,5 @@
     <string name="button_cyclist">Cyclists Nearby</string>
     <string name="button_send_message">Send Message</string>
     <string name="button_send_points">Send Points</string>
+    <string name="title_activity_user_info">User Info</string>
 </resources>

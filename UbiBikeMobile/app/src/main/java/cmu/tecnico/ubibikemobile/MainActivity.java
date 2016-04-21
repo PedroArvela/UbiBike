@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     Intent myIntent;
     Button button;
     Button button2;
+    Button btnUserInfo;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         //myIntent.putExtra("key", value); //Optional parameters
         //CurrentActivity.this.startActivity(myIntent);
+        username = "Zé das Couves"; // TODO mudar isto para ir buscar o user autenticado
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -43,15 +46,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        btnUserInfo = (Button) findViewById(R.id.btn_UserInfo);
+        btnUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myIntent = new Intent(MainActivity.this, UserInfo.class);
+                myIntent.putExtra("username", username);
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
     }
 
     @Override

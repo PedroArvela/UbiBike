@@ -9,33 +9,26 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cmu.tecnico.ubibikemobile.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="cmu.tecnico.ubibikemobile.UserInfo"
+    tools:showIn="@layout/activity_user_info">
 
-    <Button
-        android:id="@+id/button"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_book_stations" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Points:"
+        android:id="@+id/textView_userPoints"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <Button
-        android:id="@+id/button2"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_cyclist"
-        android:layout_below="@+id/button"
+        android:text="Last Trajectories"
+        android:id="@+id/textView_lastTrajectories"
+        android:layout_below="@+id/textView_userPoints"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Info"
-        android:id="@+id/btn_UserInfo"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="44dp" />
-
+        android:layout_marginTop="42dp" />
 </RelativeLayout>

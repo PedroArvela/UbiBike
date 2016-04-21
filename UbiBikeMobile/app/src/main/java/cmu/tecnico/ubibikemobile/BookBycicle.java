@@ -7,11 +7,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class BookBycicle extends AppCompatActivity {
 
     String stationName;
+    int availableBikes;
+    TextView textViewAvailableBikes;
+    TextView textViewNoBikesAvailable;
+    Button btnBookBike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +27,32 @@ public class BookBycicle extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent prevIntent = getIntent();
-        stationName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
-        Toast toast=Toast.makeText(getApplicationContext(), stationName, Toast.LENGTH_SHORT);
-        toast.show();
+        stationName = prevIntent.getStringExtra(StationsList.STATION_NAME);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        ((TextView) findViewById(R.id.textView_stationName)).append(" " + stationName);
+
+        textViewAvailableBikes = (TextView) findViewById(R.id.textView_availableBikes);
+        textViewNoBikesAvailable = (TextView) findViewById(R.id.textView_noBikeAvailable);
+        btnBookBike = (Button) findViewById(R.id.btn_bookBike);
+
+        GetAvailableBikes(stationName);
+
     }
 
+    private void GetAvailableBikes(String stationName){
+        //Comunicate with server
+        availableBikes = 4;
+
+        if(availableBikes == 0)
+        {
+            textViewNoBikesAvailable.setVisibility(View.VISIBLE);
+            btnBookBike.setEnabled(false);
+        }
+        else {
+            textViewNoBikesAvailable.setVisibility(View.INVISIBLE);
+            btnBookBike.setEnabled(true);
+        }
+
+        textViewAvailableBikes.setText("Number of Available Bikes: " + availableBikes);
+    }
 }
