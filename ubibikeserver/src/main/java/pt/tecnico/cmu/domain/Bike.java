@@ -1,4 +1,4 @@
-package pt.tecnico.cmu;
+package pt.tecnico.cmu.domain;
 
 import java.util.Random;
 
