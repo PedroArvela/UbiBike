@@ -9,17 +9,15 @@
 Run on the command line:
 
 ```
-mvn tomcat:run
+mvn exec:java
 ```
 
 The webserver will then be available at:
 
 ```
-http://localhost:8080/ubibikeserver/
+http://localhost:8080/
 ```
 
 ## Contributing
 
 Create and edit classes according to the required endpoints.
-
-If in doubt view the [Jersey Getting Started Tutorial](http://www.vogella.com/tutorials/REST/article.html#firstjersey_class) and the [Jersey Documentation](https://jersey.java.net/apidocs/latest/jersey/index.html).
