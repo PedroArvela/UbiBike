@@ -17,23 +17,18 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Chat History"
-        android:id="@+id/chat_history"
+        android:id="@+id/lbl_chatHistory"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="54dp"
-        android:layout_above="@+id/new_sms" />
+        android:layout_marginBottom="16dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/new_sms"
+        android:hint="New Text"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="95dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:hint="New Text" />
+        android:layout_toLeftOf="@+id/SubmitMsg"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -41,8 +36,22 @@
         android:layout_height="wrap_content"
         android:text="Submit"
         android:id="@+id/SubmitMsg"
-        android:layout_alignTop="@+id/new_sms"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/new_sms"/>
+
+    <ScrollView
+        android:id="@+id/chat_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="44dp" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/lbl_chatHistory"
+        android:layout_above="@+id/new_sms">
+
+        <TextView
+            android:id="@+id/chat_history"
+            android:text=""
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </ScrollView>
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,16 +26,17 @@ public class SendMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final ScrollView chatScroll = (ScrollView) findViewById(R.id.chat_scroll);
+
         history = (TextView) findViewById(R.id.chat_history);
         newMsg = (EditText) findViewById(R.id.new_sms);
         button = (Button) findViewById(R.id.SubmitMsg);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
-                if(history.getText().toString().contains("Chat History"))
-                    history.setText("");
-                String newContent = history.getText().toString() + '\n' + "ME: "+ newMsg.getText().toString();
+                String newContent = history.getText().toString() + '\n' + "Me: "+ newMsg.getText().toString();
                 history.setText(newContent);
                 newMsg.setText("");
+                chatScroll.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
 

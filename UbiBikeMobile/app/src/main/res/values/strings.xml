@@ -13,4 +13,6 @@
     <string name="button_send_message">Send Message</string>
     <string name="button_send_points">Send Points</string>
     <string name="title_activity_user_info">User Info</string>
+    <string name="button_user_info">User Info</string>
+    <string name="lbl_username_placeholder">User</string>
 </resources>

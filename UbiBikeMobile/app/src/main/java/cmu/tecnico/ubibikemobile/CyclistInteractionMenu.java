@@ -2,8 +2,6 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,7 +27,7 @@ public class CyclistInteractionMenu extends AppCompatActivity {
         Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
         toast.show();
 
-        button = (Button) findViewById(R.id.button);
+        button = (Button) findViewById(R.id.btn_BookStations);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myIntent = new Intent(CyclistInteractionMenu.this, SendPoints.class);
@@ -38,7 +36,7 @@ public class CyclistInteractionMenu extends AppCompatActivity {
             }
         });
 
-        button2 = (Button) findViewById(R.id.button2);
+        button2 = (Button) findViewById(R.id.btn_CyclistsNearby);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myIntent = new Intent(CyclistInteractionMenu.this, SendMessage.class);

@@ -21,22 +21,13 @@ public class RegisterActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        button = (Button) findViewById(R.id.register);
+        button = (Button) findViewById(R.id.btn_register);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myIntent = new Intent(RegisterActivity.this, MainActivity.class);
                 RegisterActivity.this.startActivity(myIntent);
             }
         });
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
 }
