@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class NetworkConnectionService extends IntentService {
     public final static String PARAM_USERNAME = "username";
@@ -17,6 +18,8 @@ public class NetworkConnectionService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String username = intent.getStringExtra(PARAM_USERNAME);
+
+        Log.v("Service", "Username received: " + username);
 
         final Messenger messenger = (Messenger) intent.getParcelableExtra("messenger");
         final Message message = Message.obtain(null, MESSAGE_USERNAME, username);

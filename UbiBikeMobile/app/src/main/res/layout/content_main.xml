@@ -14,31 +14,41 @@
 
     <TextView
         android:id="@+id/lbl_username"
-        android:text="@string/lbl_username_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginBottom="45dp" />
+        android:text="@string/lbl_username_placeholder"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/userPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_username"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/lbl_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/userPoints"
+        android:layout_marginLeft="@dimen/abc_control_padding_material"
+        android:layout_marginRight="@dimen/abc_control_padding_material"
+        android:layout_toRightOf="@+id/userPoints"
+        android:text="@string/lbl_points" />
 
     <Button
         android:id="@+id/btn_BookStations"
-        android:text="@string/button_book_stations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_username" />
+        android:layout_above="@+id/btn_CyclistsNearby"
+        android:text="@string/button_book_stations" />
 
     <Button
         android:id="@+id/btn_CyclistsNearby"
-        android:text="@string/button_cyclist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_BookStations" />
-
-    <Button
-        android:id="@+id/btn_UserInfo"
-        android:text="@string/button_user_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_CyclistsNearby" />
+        android:layout_alignParentBottom="true"
+        android:text="@string/button_cyclist" />
 
 </RelativeLayout>

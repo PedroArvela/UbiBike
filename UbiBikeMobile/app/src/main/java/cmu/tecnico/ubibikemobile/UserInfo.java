@@ -2,11 +2,8 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 public class UserInfo extends AppCompatActivity {
@@ -25,7 +22,7 @@ public class UserInfo extends AppCompatActivity {
         Intent prevIntent = getIntent();
         username = prevIntent.getStringExtra("username");
 
-        textViewPoints = (TextView) findViewById(R.id.textView_userPoints);
+        textViewPoints = (TextView) findViewById(R.id.userPoints);
         GetPoints();
     }
 

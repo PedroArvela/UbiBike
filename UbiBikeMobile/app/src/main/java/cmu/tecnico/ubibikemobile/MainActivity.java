@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //myIntent.putExtra("key", value); //Optional parameters
-        //CurrentActivity.this.startActivity(myIntent);
-        username = "Zé das Couves"; // TODO mudar isto para ir buscar o user autenticado
+        username = ((App) this.getApplication()).getUsername();
+
+        TextView usernameLbl = (TextView) findViewById(R.id.lbl_username);
+        usernameLbl.setText(username);
 
         button = (Button) findViewById(R.id.btn_BookStations);
         button.setOnClickListener(new View.OnClickListener() {
@@ -41,16 +43,6 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myIntent = new Intent(MainActivity.this, CyclistsList.class);
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
-
-        btnUserInfo = (Button) findViewById(R.id.btn_UserInfo);
-        btnUserInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myIntent = new Intent(MainActivity.this, UserInfo.class);
-                myIntent.putExtra("username", username);
                 MainActivity.this.startActivity(myIntent);
             }
         });

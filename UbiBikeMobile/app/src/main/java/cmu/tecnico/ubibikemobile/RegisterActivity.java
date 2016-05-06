@@ -9,9 +9,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.io.Console;
 
 import cmu.tecnico.ubibikemobile.services.NetworkConnectionService;
 
@@ -32,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                login(msg.getData().getString("username"));
+                login((String) msg.obj);
             }
         };
         final Messenger messenger = new Messenger(handler);
@@ -41,7 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent registerIntent = new Intent(RegisterActivity.this, NetworkConnectionService.class);
-                registerIntent.putExtra(NetworkConnectionService.PARAM_USERNAME, txtUsername.getText());
+                registerIntent.putExtra(NetworkConnectionService.PARAM_USERNAME, txtUsername.getText().toString());
+
+                Log.v("Register", "Username sent: " + txtUsername.getText().toString());
+
                 registerIntent.putExtra("messenger", messenger);
 
                 startService(registerIntent);
@@ -51,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void login(String username) {
         ((App) this.getApplication()).setUsername(username);
+        Log.v("Info", "Username received: " + username);
 
         myIntent = new Intent(RegisterActivity.this, MainActivity.class);
         RegisterActivity.this.startActivity(myIntent);

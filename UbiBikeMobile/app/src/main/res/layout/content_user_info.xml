@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Points:"
-        android:id="@+id/textView_userPoints"
+        android:id="@+id/userPoints"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Last Trajectories"
         android:id="@+id/textView_lastTrajectories"
-        android:layout_below="@+id/textView_userPoints"
+        android:layout_below="@+id/userPoints"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="42dp" />
