@@ -38,6 +38,13 @@
         android:text="@string/lbl_points" />
 
     <Button
+        android:id="@+id/btn_UserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_BookStations"
+        android:text="User Info" />
+
+    <Button
         android:id="@+id/btn_BookStations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
