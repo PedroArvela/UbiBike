@@ -6,10 +6,10 @@ import android.widget.EditText;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -43,10 +43,10 @@ public class LoginTask extends AsyncTask<Boolean, Boolean, Pair<String, Boolean>
 
             int response = conn.getResponseCode();
 
-            if(response == 200) {
+            if (response == 200) {
                 result = new Pair<String, Boolean>(username, password.equals(rd.readLine()));
             }
-        } catch (IOException e) {
+        } catch (MalformedURLException e) {
             // nothing to do
         } finally {
             return result;
