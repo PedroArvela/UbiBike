@@ -67,13 +67,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_CyclistsNearby"
-        android:text="@string/button_book_stations" />
+        android:text="@string/button_book_stations"
+        android:onClick="btn_BookStations_onClick" />
 
     <Button
         android:id="@+id/btn_CyclistsNearby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/button_cyclist" />
+        android:text="@string/button_cyclist"
+        android:onClick="btn_CyclistsNearby_onClick" />
 
 </RelativeLayout>

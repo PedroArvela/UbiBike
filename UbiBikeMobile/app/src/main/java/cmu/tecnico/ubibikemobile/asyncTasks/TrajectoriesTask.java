@@ -42,12 +42,11 @@ public class TrajectoriesTask extends AsyncTask<Boolean, Boolean, List<Trajector
     protected List<Trajectory> doInBackground(Boolean... params) {
         List<Trajectory> trajectories = new ArrayList<Trajectory>();
 
-        URL url = null;
         try {
-            url = new URL(resources.getString(R.string.protocol),
-                    resources.getString(R.string.domain),
-                    resources.getInteger(R.integer.port),
-                    resources.getString(R.string.base) + "user/" + username + "/trajectories");
+            URL url = new URL(
+                    resources.getString(R.string.protocol), resources.getString(R.string.domain),
+                    resources.getInteger(R.integer.port), resources.getString(R.string.base) +
+                    "user/" + username + "/trajectories");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(conn.getInputStream());
@@ -56,18 +55,23 @@ public class TrajectoriesTask extends AsyncTask<Boolean, Boolean, List<Trajector
             int response = conn.getResponseCode();
 
             if (response == 200) {
-                Log.d("TrajectoriesTask", "Response successfull");
-
                 String line;
+
                 while ((line = rd.readLine()) != null) {
-                    Log.d("TrajectoriesTask", line);
-                    Trajectory t = new Trajectory(line, "Avenida Rovisco Pais, 1");
-                    Log.d("TrajectoriesTask", t.toString());
-                    trajectories.add(t);
+                    URL turl = new URL(resources.getString(R.string.protocol), resources.getString(R.string.domain),
+                             resources.getInteger(R.integer.port), resources.getString(R.string.base) +
+                    "user/" + username + "/trajectories/" + line);
+
+                    HttpURLConnection tconn = (HttpURLConnection) turl.openConnection();
+                    BufferedReader trd = new BufferedReader(new InputStreamReader(
+                            new BufferedInputStream(tconn.getInputStream()), StandardCharsets.UTF_8));
+
+                    if (tconn.getResponseCode() == 200) {
+
+                        Trajectory t = new Trajectory(line, trd.readLine());
+                        trajectories.add(t);
+                    }
                 }
-            } else {
-                Log.e("TrajectoriesTask", "Response from server was " + response);
-                Log.d("TrajectoriesTask", "Requested url was " + url.toString());
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();

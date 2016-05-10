@@ -11,7 +11,10 @@ public class Trajectory {
         this.start = start;
     }
 
+    public String getDate() { return date; }
+    public String getStart() { return start; }
+
     public String toString() {
-        return date.toString() + " - " + start;
+        return date + " - " + start;
     }
 }
