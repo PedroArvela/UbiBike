@@ -2,17 +2,16 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
 import cmu.tecnico.R;
-import cmu.tecnico.wifiDirect.CyclistsList;
+import cmu.tecnico.wifiDirect.WifiHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     Button btnUserInfo;
     String username;
-    //WifiHandler wifiHandler;
+    WifiHandler wifiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //MyApplication app = (MyApplication) getApplicationContext();
-        //wifiHandler = new WifiHandler(getApplicationContext());
-        //app.wifiHandler = wifiHandler;
+        MyApplication app = (MyApplication) getApplicationContext();
+        wifiHandler = new WifiHandler(getApplicationContext());
+        app.wifiHandler = wifiHandler;
+        wifiHandler.wifiOn();
 
         //myIntent.putExtra("key", value); //Optional parameters
         //CurrentActivity.this.startActivity(myIntent);

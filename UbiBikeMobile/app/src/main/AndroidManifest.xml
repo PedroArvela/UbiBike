@@ -3,6 +3,7 @@
     package="cmu.tecnico">
 
     <application
+        android:name=".ubibikemobile.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -39,7 +40,7 @@
             android:label="@string/title_activity_send_points"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".wifiDirect.CyclistsList"
+            android:name=".ubibikemobile.CyclistsList"
             android:label="@string/title_activity_cyclist_interaction_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

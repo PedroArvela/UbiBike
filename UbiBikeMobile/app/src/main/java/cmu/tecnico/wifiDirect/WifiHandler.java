@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import cmu.tecnico.R;
+
 
 import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
 import pt.inesc.termite.wifidirect.SimWifiP2pDevice;
@@ -37,17 +39,17 @@ import pt.inesc.termite.wifidirect.sockets.SimWifiP2pSocketServer;
  * Created by Toninho on 09/05/2016.
  */
 
-/*
+
 public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2pManager.GroupInfoListener {
 
     public Activity currActivity;
     private Context appContext;
     private boolean mBound = false;
-    private SimWifiP2pManager mManager = null;
+    public SimWifiP2pManager mManager = null;
     private SimWifiP2pManager.Channel mChannel = null;
     private SimWifiP2pSocketServer mSrvSocket = null;
     private SimWifiP2pBroadcastReceiver mReceiver;
-    private ArrayList<String> nearbyAvailable;
+    public ArrayList<String> nearbyAvailable;
     private HashMap<String, SimWifiP2pSocket> connected;
 
 
@@ -65,6 +67,24 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         filter.addAction(SimWifiP2pBroadcast.WIFI_P2P_GROUP_OWNERSHIP_CHANGED_ACTION);
         mReceiver = new SimWifiP2pBroadcastReceiver(this);
         getContext().registerReceiver(mReceiver, filter);
+    }
+
+    public void requestPeers(){
+        if (mBound) {
+            mManager.requestPeers(mChannel, this);
+        } else {
+            Log.d("WIFI_MANAGER", "Service not bound.");
+        }
+    }
+
+    public void requestGroupInfo(){
+
+        if (mBound) {
+            mManager.requestGroupInfo(mChannel, this);
+        } else {
+            Log.d("WIFI_MANAGER", "Service not bound.");
+        }
+
     }
 
     @Override
@@ -190,7 +210,6 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
         @Override
         protected void onProgressUpdate(String... values) {
-                Log.d("TEST RECEIVE",values[0]);
             //mTextOutput.append(values[0] + "\n");
         }
     }
@@ -205,8 +224,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         Toast.makeText(currActivity, statePrint,
                 Toast.LENGTH_SHORT).show();
     }
-
-
+    
     public void peersChanged(){
         Toast.makeText(currActivity, "Peer list changed",
                 Toast.LENGTH_SHORT).show();
@@ -230,6 +248,9 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         Intent intent = new Intent(getContext(), SimWifiP2pService.class);
         getContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         mBound = true;
+
+        new IncommingCommTask().executeOnExecutor(
+                AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void wifiOff(){
@@ -257,4 +278,3 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         }
     };
 }
-*/

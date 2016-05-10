@@ -11,11 +11,11 @@ import pt.inesc.termite.wifidirect.SimWifiP2pInfo;
 
 public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
 
-    private MsgSenderActivity activity;
+    private WifiHandler handler;
 
-    public SimWifiP2pBroadcastReceiver(MsgSenderActivity activity) {
+    public SimWifiP2pBroadcastReceiver(WifiHandler handler) {
         super();
-        this.activity = activity;
+        this.handler = handler;
     }
 
     @Override
@@ -29,9 +29,9 @@ public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
 
             int state = intent.getIntExtra(SimWifiP2pBroadcast.EXTRA_WIFI_STATE, -1);
             if (state == SimWifiP2pBroadcast.WIFI_P2P_STATE_ENABLED) {
-
+                handler.wifiEnabled(true);
             } else {
-
+                handler.wifiEnabled(false);
             }
 
         } else if (SimWifiP2pBroadcast.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
@@ -39,7 +39,7 @@ public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
             // Request available peers from the wifi p2p manager. This is an
             // asynchronous call and the calling activity is notified with a
             // callback on PeerListListener.onPeersAvailable()
-
+            handler.peersChanged();
 
 
         } else if (SimWifiP2pBroadcast.WIFI_P2P_NETWORK_MEMBERSHIP_CHANGED_ACTION.equals(action)) {
@@ -47,14 +47,14 @@ public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
         	SimWifiP2pInfo ginfo = (SimWifiP2pInfo) intent.getSerializableExtra(
         			SimWifiP2pBroadcast.EXTRA_GROUP_INFO);
         	ginfo.print();
-
+            handler.membChanged();
 
         } else if (SimWifiP2pBroadcast.WIFI_P2P_GROUP_OWNERSHIP_CHANGED_ACTION.equals(action)) {
 
         	SimWifiP2pInfo ginfo = (SimWifiP2pInfo) intent.getSerializableExtra(
         			SimWifiP2pBroadcast.EXTRA_GROUP_INFO);
         	ginfo.print();
-
+            handler.ownerChanged();
         }
     }
 }

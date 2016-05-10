@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:name="cmu.tecnico.ubibikemobile.CyclistsListActivity"
     android:parentActivityName="cmu.tecnico.ubibikemobile.MainActivity"
-    tools:context="cmu.tecnico.wifiDirect.CyclistsList">
+    tools:context=".ubibikemobile.CyclistsList">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
