@@ -180,8 +180,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
             Log.d("TEST", "IncommingCommTask started (" + this.hashCode() + ").");
 
             try {
-                mSrvSocket = new SimWifiP2pSocketServer(
-                        Integer.parseInt(getContext().getString(R.string.port)));
+                mSrvSocket = new SimWifiP2pSocketServer(10001);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -224,7 +223,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         Toast.makeText(currActivity, statePrint,
                 Toast.LENGTH_SHORT).show();
     }
-    
+
     public void peersChanged(){
         Toast.makeText(currActivity, "Peer list changed",
                 Toast.LENGTH_SHORT).show();
