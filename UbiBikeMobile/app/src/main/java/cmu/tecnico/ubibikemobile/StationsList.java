@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import cmu.tecnico.R;
 
 public class StationsList extends AppCompatActivity {
     ArrayList<String> stationNames;

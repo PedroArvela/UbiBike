@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cmu.tecnico.ubibikemobile">
+    package="cmu.tecnico">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ubibikemobile.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ubibikemobile.RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,31 +23,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StationsList"
+            android:name=".ubibikemobile.StationsList"
             android:label="@string/title_activity_stations_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BookBycicle"
+            android:name=".ubibikemobile.BookBycicle"
             android:label="@string/title_activity_book_bycicle"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CyclistsList"
-            android:label="@string/title_activity_cyclists_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CyclistInteractionMenu"
+            android:name=".ubibikemobile.CyclistInteractionMenu"
             android:label="@string/title_activity_cyclist_interaction_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SendPoints"
+            android:name=".ubibikemobile.SendPoints"
             android:label="@string/title_activity_send_points"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SendMessage"
+            android:name=".wifiDirect.CyclistsList"
+            android:label="@string/title_activity_cyclist_interaction_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ubibikemobile.SendMessage"
             android:label="@string/title_activity_send_message"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserInfo"
+            android:name=".ubibikemobile.UserInfo"
             android:label="@string/title_activity_user_info"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

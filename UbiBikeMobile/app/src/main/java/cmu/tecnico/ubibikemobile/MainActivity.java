@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import cmu.tecnico.R;
+import cmu.tecnico.wifiDirect.CyclistsList;
+
 public class MainActivity extends AppCompatActivity {
 
     Intent myIntent;
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     Button btnUserInfo;
     String username;
+    //WifiHandler wifiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //MyApplication app = (MyApplication) getApplicationContext();
+        //wifiHandler = new WifiHandler(getApplicationContext());
+        //app.wifiHandler = wifiHandler;
 
         //myIntent.putExtra("key", value); //Optional parameters
         //CurrentActivity.this.startActivity(myIntent);

@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+import cmu.tecnico.wifiDirect.CyclistsList;
+import cmu.tecnico.R;
 
 public class SendPoints extends AppCompatActivity {
 

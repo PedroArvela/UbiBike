@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cmu.tecnico.R;
+import cmu.tecnico.wifiDirect.CyclistsList;
+
 public class SendMessage extends AppCompatActivity {
 
     TextView history;
@@ -25,6 +28,15 @@ public class SendMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //final MyApplication app = (MyApplication) getApplicationContext();
+        //app.wifiHandler.currActivity = this;
+
+        Intent prevIntent = getIntent();
+        final String cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
+        Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
+        toast.show();
+
         history = (TextView) findViewById(R.id.chat_history);
         newMsg = (EditText) findViewById(R.id.new_sms);
         button = (Button) findViewById(R.id.SubmitMsg);
@@ -34,19 +46,13 @@ public class SendMessage extends AppCompatActivity {
                     history.setText("");
                 String newContent = history.getText().toString() + '\n' + "ME: "+ newMsg.getText().toString();
                 history.setText(newContent);
+                //app.wifiHandler.sendMessage(cyclistName ,newContent);
                 newMsg.setText("");
             }
         });
 
-
         setSupportActionBar(toolbar);
 
-
-
-        Intent prevIntent = getIntent();
-        String cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
-        Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
-        toast.show();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

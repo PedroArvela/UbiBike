@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import cmu.tecnico.wifiDirect.CyclistsList;
+import cmu.tecnico.R;
 
 public class CyclistInteractionMenu extends AppCompatActivity {
 
