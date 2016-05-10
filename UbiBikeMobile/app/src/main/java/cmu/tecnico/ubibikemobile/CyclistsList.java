@@ -2,8 +2,6 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,19 +32,19 @@ public class CyclistsList extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.cyclists);
         cyclistsNames = GetNearbyCyclistsList();
-        adapter = new ArrayAdapter<String>(this, R.layout.single_list_item, R.id.list_item, cyclistsNames);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, cyclistsNames);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(CyclistsList.this, CyclistInteractionMenu.class);
-                String selected = ((TextView) view.findViewById(R.id.list_item)).getText().toString();
+                String selected = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
                 intent.putExtra(CYCLER_NAME, selected);
                 startActivity(intent);
             }
         });
-        
+
         listView.setAdapter(adapter);
     }
 

@@ -3,14 +3,15 @@ package cmu.tecnico.ubibikemobile;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -18,11 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.Locale;
 
-import cmu.tecnico.ubibikemobile.R;
-import cmu.tecnico.ubibikemobile.StationsList;
-import cmu.tecnico.ubibikemobile.UserInfo;
-
-public class TrajectoryActivity extends FragmentActivity implements OnMapReadyCallback {
+public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     String startingPoint;
@@ -32,13 +29,19 @@ public class TrajectoryActivity extends FragmentActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajectory);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         Intent prevIntent = getIntent();
-        startingPoint = prevIntent.getStringExtra(UserInfo.TRAJECTORY_STARTING_POINT);
+        startingPoint = prevIntent.getStringExtra(MainActivity.TRAJECTORY_STARTING_POINT);
         geoCoder = new Geocoder(this, Locale.getDefault());
     }
 

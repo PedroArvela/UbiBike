@@ -9,8 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     Button button2;
     Button btnUserInfo;
+    ListView listView;
+    ArrayList<String> lastTrajectories;
+    ArrayAdapter adapter;
+    static String TRAJECTORY_STARTING_POINT = "TRAJECTORY_STARTING_POINT";
     String username;
 
     @Override
@@ -48,13 +57,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnUserInfo = (Button) findViewById(R.id.btn_UserInfo);
-        btnUserInfo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                myIntent = new Intent(MainActivity.this, UserInfo.class);
-                MainActivity.this.startActivity(myIntent);
+        listView = (ListView) findViewById(R.id.listview_trajectories);
+        lastTrajectories = getLastTrajectories();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, lastTrajectories);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
+                String selected = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
+                String startingPoint = selected.split("-")[1];
+                intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
+                startActivity(intent);
             }
         });
+
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -77,5 +95,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private ArrayList<String> getLastTrajectories() {
+        //Buscar info da data + local de Partida das ultimas trajectorias ao server
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        arrayList.add("22/03/2016 13:37 - Avenida Rovisco Pais 1");
+        arrayList.add("23/03/2016 13:37 - Avenida Rovisco Pais 1");
+        arrayList.add("24/03/2016 13:37 - Avenida Rovisco Pais 1");
+        arrayList.add("25/03/2016 13:37 - Avenida Rovisco Pais 1");
+
+        return arrayList;
     }
 }

@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_username"
         android:text="0"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/lbl_points"
@@ -35,14 +35,24 @@
         android:layout_marginLeft="@dimen/abc_control_padding_material"
         android:layout_marginRight="@dimen/abc_control_padding_material"
         android:layout_toRightOf="@+id/userPoints"
-        android:text="@string/lbl_points" />
+        android:text="@string/lbl_points"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Button
-        android:id="@+id/btn_UserInfo"
+    <TextView
+        android:id="@+id/lbl_lastTrajectories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_points"
+        android:layout_marginTop="@dimen/abc_dialog_padding_top_material"
+        android:text="Last Trajectories"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/listview_trajectories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_BookStations"
-        android:text="User Info" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/lbl_lastTrajectories" />
 
     <Button
         android:id="@+id/btn_BookStations"
