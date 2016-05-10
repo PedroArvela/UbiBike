@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,6 +27,9 @@ public class BookBycicle extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         Intent prevIntent = getIntent();
         stationName = prevIntent.getStringExtra(StationsList.STATION_NAME);
 
@@ -39,16 +43,14 @@ public class BookBycicle extends AppCompatActivity {
 
     }
 
-    private void GetAvailableBikes(String stationName){
+    private void GetAvailableBikes(String stationName) {
         //Comunicate with server
         availableBikes = 4;
 
-        if(availableBikes == 0)
-        {
+        if (availableBikes == 0) {
             textViewNoBikesAvailable.setVisibility(View.VISIBLE);
             btnBookBike.setEnabled(false);
-        }
-        else {
+        } else {
             textViewNoBikesAvailable.setVisibility(View.INVISIBLE);
             btnBookBike.setEnabled(true);
         }

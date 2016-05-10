@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,9 +30,12 @@ public class CyclistsList extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         listView = (ListView) findViewById(R.id.cyclists);
         cyclistsNames = GetNearbyCyclistsList();
-        adapter = new ArrayAdapter<String>(this,R.layout.single_list_item, R.id.list_item, cyclistsNames);
+        adapter = new ArrayAdapter<String>(this, R.layout.single_list_item, R.id.list_item, cyclistsNames);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -43,30 +47,17 @@ public class CyclistsList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
+        
         listView.setAdapter(adapter);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
-
-    private ArrayList<String> GetNearbyCyclistsList (){
+    private ArrayList<String> GetNearbyCyclistsList() {
         ArrayList<String> stationNames = new ArrayList<String>();
         stationNames.add("Johny");
         stationNames.add("Peter");
         stationNames.add("Tony");
         return stationNames;
     }
-
 
 
 }

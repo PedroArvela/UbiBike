@@ -9,8 +9,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".services.NetworkConnectionService" />
+        <service android:name=".services.NetworkConnectionService" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -28,30 +28,37 @@
         <activity
             android:name=".StationsList"
             android:label="@string/title_activity_stations_list"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BookBycicle"
             android:label="@string/title_activity_book_bycicle"
+            android:parentActivityName=".StationsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CyclistsList"
             android:label="@string/title_activity_cyclists_list"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CyclistInteractionMenu"
             android:label="@string/title_activity_cyclist_interaction_menu"
+            android:parentActivityName=".CyclistsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SendPoints"
             android:label="@string/title_activity_send_points"
+            android:parentActivityName=".CyclistInteractionMenu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SendMessage"
             android:label="@string/title_activity_send_message"
+            android:parentActivityName=".CyclistInteractionMenu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UserInfo"
             android:label="@string/title_activity_user_info"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

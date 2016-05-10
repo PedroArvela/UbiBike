@@ -2,6 +2,7 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -28,6 +29,9 @@ public class UserInfo extends AppCompatActivity {
         setContentView(R.layout.activity_user_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         Intent prevIntent = getIntent();
         username = prevIntent.getStringExtra("username");
@@ -61,7 +65,7 @@ public class UserInfo extends AppCompatActivity {
         textViewPoints.setText("Points: " + points);
     }
 
-    private ArrayList<String> getLastTrajectories(){
+    private ArrayList<String> getLastTrajectories() {
         //Buscar info da data + local de Partida das ultimas trajectorias ao server
 
         ArrayList<String> arrayList = new ArrayList<String>();
