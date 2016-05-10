@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     Button btnUserInfo;
     String username;
-    WifiHandler wifiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         MyApplication app = (MyApplication) getApplicationContext();
-        wifiHandler = new WifiHandler(getApplicationContext());
-        app.wifiHandler = wifiHandler;
-        wifiHandler.wifiOn();
+        app.wifiHandler = new WifiHandler(getApplicationContext());
+        app.wifiHandler.currActivity = this;
+        app.wifiHandler.wifiOn();
 
         //myIntent.putExtra("key", value); //Optional parameters
         //CurrentActivity.this.startActivity(myIntent);
