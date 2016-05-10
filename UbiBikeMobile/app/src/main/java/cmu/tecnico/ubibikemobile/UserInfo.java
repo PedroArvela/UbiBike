@@ -41,17 +41,16 @@ public class UserInfo extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listview_trajectories);
         lastTrajectories = getLastTrajectories();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lastTrajectories);
+        adapter = new ArrayAdapter<String>(this,R.layout.single_list_item, R.id.list_item, lastTrajectories);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-//                Intent intent = new Intent(UserInfo.this, BLABLABLA);
-//                String selected = ((TextView) view.findViewById(R.id.list_item)).getText().toString();
-//                String startingPoint = selected.split("-")[1];
-//                intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
-//                startActivity(intent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(UserInfo.this, TrajectoryActivity.class);
+                String selected = ((TextView) view.findViewById(R.id.list_item)).getText().toString();
+                String startingPoint = selected.split("-")[1];
+                intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
+                startActivity(intent);
             }
         });
 
@@ -69,10 +68,10 @@ public class UserInfo extends AppCompatActivity {
         //Buscar info da data + local de Partida das ultimas trajectorias ao server
 
         ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("22/03/2016 13:37 - Avenida Rovisco Pais Nº1");
-        arrayList.add("23/03/2016 13:37 - Avenida Rovisco Pais Nº1");
-        arrayList.add("24/03/2016 13:37 - Avenida Rovisco Pais Nº1");
-        arrayList.add("25/03/2016 13:37 - Avenida Rovisco Pais Nº1");
+        arrayList.add("22/03/2016 13:37 - Avenida Rovisco Pais 1");
+        arrayList.add("23/03/2016 13:37 - Avenida Rovisco Pais 1");
+        arrayList.add("24/03/2016 13:37 - Avenida Rovisco Pais 1");
+        arrayList.add("25/03/2016 13:37 - Avenida Rovisco Pais 1");
 
         return arrayList;
     }

@@ -16,4 +16,5 @@
     <string name="button_user_info">User Info</string>
     <string name="lbl_username_placeholder">User</string>
     <string name="lbl_points">points</string>
+    <string name="title_activity_trajectory">Last Trajectories</string>
 </resources>
