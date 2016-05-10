@@ -11,12 +11,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.Console;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import cmu.tecnico.ubibikemobile.asyncTasks.LoginTask;
 import cmu.tecnico.ubibikemobile.services.NetworkConnectionService;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -33,25 +37,16 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText txtUsername = (EditText) findViewById(R.id.txt_username);
         setSupportActionBar(toolbar);
 
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                login((String) msg.obj);
-            }
-        };
-        final Messenger messenger = new Messenger(handler);
-
         button = (Button) findViewById(R.id.btn_register);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent registerIntent = new Intent(RegisterActivity.this, NetworkConnectionService.class);
-                registerIntent.putExtra(NetworkConnectionService.PARAM_USERNAME, txtUsername.getText().toString());
-
-                Log.v("Register", "Username sent: " + txtUsername.getText().toString());
-
-                registerIntent.putExtra("messenger", messenger);
-
-                startService(registerIntent);
+                try {
+                    new LoginTask().execute(
+                            new Pair<RegisterActivity, URL>(RegisterActivity.this,
+                                    new URL("http", "web.tecnico.ulisboa.pt", "/~jose.pedro.arvela/ubibike/user/" + txtUsername.getText().toString())));
+                } catch (MalformedURLException e) {
+                    // ignore
+                }
             }
         });
     }
