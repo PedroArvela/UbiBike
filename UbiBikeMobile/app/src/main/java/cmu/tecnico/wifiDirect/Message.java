@@ -13,6 +13,8 @@ public class Message {
 
     String hash;
 
+    public static final String TYPE_POINTS = "POINTS";
+    public static final String TYPE_MSG = "MSG";
 
     public Message(String type, String content, String toUser){
         this.type = type;
