@@ -10,6 +10,7 @@ public class App extends Application {
 
     private String username;
     private User user;
+    private WifiHandler wifiHandler;
 
     public String getUsername() {
         return username;
@@ -25,5 +26,11 @@ public class App extends Application {
 
     public void setUser(User user) {
         this.user = user;
+
+    public WifiHandler getWifiHandler() {
+        return wifiHandler;
+    }
+    public void setWifiHandler(WifiHandler wifiHandler) {
+        this.wifiHandler = wifiHandler;
     }
 }

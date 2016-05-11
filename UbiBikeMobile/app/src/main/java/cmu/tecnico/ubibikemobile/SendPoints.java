@@ -10,11 +10,15 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import cmu.tecnico.wifiDirect.WifiHandler;
+
 public class SendPoints extends AppCompatActivity {
 
     Intent myIntent;
     Button button;
     NumberPicker pointsField;
+    WifiHandler wifiHandler;
+    String cyclistName;
     //static String CYCLER_NAME = "cyclerName";
 
     @Override
@@ -28,15 +32,22 @@ public class SendPoints extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         Intent prevIntent = getIntent();
-        String cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
-        Toast toast = Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
+
+        cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
+        Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
         toast.show();
 
+        final App app = (App) getApplicationContext();
+        app.getWifiHandler().currActivity = this;
+        this.wifiHandler = app.getWifiHandler();
+
         button = (Button) findViewById(R.id.btn_BookStations);
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myIntent = new Intent(SendPoints.this, MainActivity.class);
                 SendPoints.this.startActivity(myIntent);
+                wifiHandler.sendPoints(cyclistName, pointsField.getValue());
             }
         });
         button.setEnabled(false);

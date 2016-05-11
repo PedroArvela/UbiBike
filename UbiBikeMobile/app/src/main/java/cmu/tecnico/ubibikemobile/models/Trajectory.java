@@ -1,5 +1,4 @@
 package cmu.tecnico.ubibikemobile.models;
-
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;

@@ -23,6 +23,7 @@ import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryListTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryTask;
 import cmu.tecnico.ubibikemobile.models.Trajectory;
 import cmu.tecnico.ubibikemobile.models.User;
+import cmu.tecnico.wifiDirect.WifiHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,10 +49,17 @@ public class MainActivity extends AppCompatActivity {
         TextView usernameLbl = (TextView) findViewById(R.id.lbl_username);
         TextView pointsLbl = (TextView) findViewById(R.id.userPoints);
 
+        App app = (App) getApplicationContext();
+        if(app.getWifiHandler()==null)
+            app.setWifiHandler(new WifiHandler(getApplicationContext()));
+        app.getWifiHandler().currActivity = this;
+        app.getWifiHandler().wifiOn();
+
         usernameLbl.setText(user.displayName);
         pointsLbl.setText(Integer.toString(user.points));
 
         listView = (ListView) findViewById(R.id.listview_trajectories);
+
         lastTrajectories = new ArrayList<String>();
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, lastTrajectories);
@@ -102,5 +110,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         new TrajectoryTask((App) getApplication(), handler, getResources(), user.username).execute(trajectory);
+
     }
 }

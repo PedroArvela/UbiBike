@@ -53,7 +53,6 @@ public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.addPolyline(new PolylineOptions()
                 .addAll(trajectory.getTrajectory())
                 .width(4)
