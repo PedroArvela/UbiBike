@@ -1,4 +1,4 @@
-package cmu.tecnico;
+package cmu.tecnico.ubibikeserver;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
