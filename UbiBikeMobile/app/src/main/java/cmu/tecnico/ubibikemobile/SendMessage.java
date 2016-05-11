@@ -2,21 +2,26 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import cmu.tecnico.R;
+import cmu.tecnico.wifiDirect.WifiHandler;
 
 public class SendMessage extends AppCompatActivity {
 
-    TextView history;
+    public TextView history;
     EditText newMsg;
     Button button;
+    WifiHandler wifiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,30 +37,34 @@ public class SendMessage extends AppCompatActivity {
         Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
         toast.show();
 
+        setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        final App app = (App) getApplicationContext();
+        app.getWifiHandler().currActivity = this;
+        this.wifiHandler = app.getWifiHandler();
+
+        final ScrollView chatScroll = (ScrollView) findViewById(R.id.chat_scroll);
+
         history = (TextView) findViewById(R.id.chat_history);
         newMsg = (EditText) findViewById(R.id.new_sms);
         button = (Button) findViewById(R.id.SubmitMsg);
+        wifiHandler.readFile(cyclistName);
+
         button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)  {
-                if(history.getText().toString().contains("Chat History"))
-                    history.setText("");
-                String newContent = history.getText().toString() + '\n' + "ME: "+ newMsg.getText().toString();
+            public void onClick(View v) {
+                String newContent = history.getText().toString() + '\n' + "Me: " + newMsg.getText().toString();
                 history.setText(newContent);
+                wifiHandler.sendMessage(cyclistName, newContent);
+                wifiHandler.saveFile(cyclistName, newContent);
                 newMsg.setText("");
+                chatScroll.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
 
         setSupportActionBar(toolbar);
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
 }

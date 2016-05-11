@@ -1,59 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cmu.tecnico">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    package="cmu.tecnico.ubibikemobile">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:name=".ubibikemobile.MyApplication"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service
             android:name="pt.inesc.termite.wifidirect.service.SimWifiP2pService" />
+        <service android:name=".services.NetworkConnectionService" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
-            android:name=".ubibikemobile.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".ubibikemobile.RegisterActivity"
+            android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ubibikemobile.StationsList"
+            android:name=".StationsList"
             android:label="@string/title_activity_stations_list"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ubibikemobile.BookBycicle"
+            android:name=".BookBycicle"
             android:label="@string/title_activity_book_bycicle"
+            android:parentActivityName=".StationsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ubibikemobile.CyclistInteractionMenu"
+            android:name=".CyclistsList"
+            android:label="@string/title_activity_cyclists_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CyclistInteractionMenu"
             android:label="@string/title_activity_cyclist_interaction_menu"
+            android:parentActivityName=".CyclistsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ubibikemobile.SendPoints"
+            android:name=".SendPoints"
             android:label="@string/title_activity_send_points"
+            android:parentActivityName=".CyclistInteractionMenu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ubibikemobile.CyclistsList"
-            android:label="@string/title_activity_cyclist_interaction_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ubibikemobile.SendMessage"
+            android:name=".SendMessage"
             android:label="@string/title_activity_send_message"
+            android:parentActivityName=".CyclistInteractionMenu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ubibikemobile.UserInfo"
-            android:label="@string/title_activity_user_info"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".TrajectoryActivity"
+            android:label="@string/title_activity_trajectory"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

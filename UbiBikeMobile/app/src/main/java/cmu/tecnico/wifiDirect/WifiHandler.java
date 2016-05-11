@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import cmu.tecnico.R;
+import cmu.tecnico.ubibikemobile.*;
 
 
 import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
@@ -48,6 +48,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
     public Activity currActivity;
     private Context appContext;
+    private MessageHistory msgHistory;
     private boolean mBound = false;
     public SimWifiP2pManager mManager = null;
     private SimWifiP2pManager.Channel mChannel = null;
@@ -61,6 +62,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         this.appContext = appContext;
         nearbyAvailable = new ArrayList<String>();
         connected = new HashMap<String, String>();
+        msgHistory = new MessageHistory(appContext);
 
         SimWifiP2pSocketManager.Init(appContext);
 
@@ -218,7 +220,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
                 if(jsonObject.getString("type").equals(Message.TYPE_POINTS)){
                     addPoints(Integer.parseInt(jsonObject.getString("content")));
                 }else if (jsonObject.getString("type").equals(Message.TYPE_MSG)){
-                    messageReceived(jsonObject.getString("content"));
+                    messageReceived("",jsonObject.getString("content"));
                 }
             }catch(JSONException e){
                 Log.d("Error jsonMessage: ", e.getMessage());
@@ -227,11 +229,24 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
     }
 
     private void addPoints(int pointsToadd){
-
+        ((App)appContext).getUser().points += pointsToadd;
     }
 
-    private void messageReceived(String pointsToadd){
+    private void messageReceived(String sender, String message){
+        //se estiver na actividade das mensagens, adicionar ao ecra
+        if(currActivity instanceof SendMessage) {
+            String currhistory = ((SendMessage)currActivity).history.getText().toString() + '\n' + "Me: " + message ;
+            ((SendMessage)currActivity).history.setText(currhistory);
+        }
+        saveFile(sender, message);
+    }
 
+    public void saveFile(String sender, String message){
+        msgHistory.writeFile(sender, message);
+    }
+
+    public String readFile(String sender){
+        return msgHistory.readFile(sender);
     }
 
     public void sendPoints(String user,int points){

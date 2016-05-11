@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Messenger;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,7 +27,6 @@ import pt.inesc.termite.wifidirect.SimWifiP2pDeviceList;
 import pt.inesc.termite.wifidirect.SimWifiP2pInfo;
 import pt.inesc.termite.wifidirect.SimWifiP2pManager;
 import pt.inesc.termite.wifidirect.service.SimWifiP2pService;
-import cmu.tecnico.R;
 
 public class CyclistsList extends AppCompatActivity {
     ArrayList<String> cyclistsNames;
@@ -41,17 +41,17 @@ public class CyclistsList extends AppCompatActivity {
         setContentView(R.layout.activity_cyclists_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
-
-
-        final MyApplication app = (MyApplication) getApplicationContext();
-        wifiHandler = app.wifiHandler;
-        app.wifiHandler.currActivity = this;
+        final App app = (App) getApplicationContext();
+        wifiHandler = app.getWifiHandler();
+        app.getWifiHandler().currActivity = this;
         wifiHandler.requestPeers();
 
         cyclistsNames = new ArrayList<String>();
         cyclistsNames = wifiHandler.nearbyAvailable;
-        adapter = new ArrayAdapter<String>(this,R.layout.single_list_item, R.id.list_item, cyclistsNames);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, R.id.list_item, cyclistsNames);
 
         listView = (ListView) findViewById(R.id.cyclists);
 
@@ -60,7 +60,7 @@ public class CyclistsList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(CyclistsList.this, CyclistInteractionMenu.class);
-                String selected = ((TextView) view.findViewById(R.id.list_item)).getText().toString();
+                String selected = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
                 intent.putExtra(CYCLER_NAME, selected);
                 startActivity(intent);
             }
@@ -69,5 +69,4 @@ public class CyclistsList extends AppCompatActivity {
         listView.setAdapter(adapter);
         //adapter.notify();
     }
-
 }

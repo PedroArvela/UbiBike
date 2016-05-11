@@ -6,11 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import cmu.tecnico.R;
+import java.util.ArrayList;
+
+import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoriesTask;
+import cmu.tecnico.ubibikemobile.models.Trajectory;
+import cmu.tecnico.ubibikemobile.models.User;
 import cmu.tecnico.wifiDirect.WifiHandler;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +26,10 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     Button button2;
     Button btnUserInfo;
-    String username;
+    ListView listView;
+    ArrayList<Trajectory> lastTrajectories;
+    ArrayAdapter adapter;
+    static String TRAJECTORY_STARTING_POINT = "TRAJECTORY_STARTING_POINT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,62 +38,51 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        MyApplication app = (MyApplication) getApplicationContext();
-        if(app.wifiHandler==null)
-            app.wifiHandler = new WifiHandler(getApplicationContext());
-        app.wifiHandler.currActivity = this;
-        app.wifiHandler.wifiOn();
+        App app = (App) getApplicationContext();
+        if(app.getWifiHandler()==null)
+            app.setWifiHandler(new WifiHandler(getApplicationContext()));
+        app.getWifiHandler().currActivity = this;
+        app.getWifiHandler().wifiOn();
 
-        //myIntent.putExtra("key", value); //Optional parameters
-        //CurrentActivity.this.startActivity(myIntent);
-        username = "Zé das Couves"; // TODO mudar isto para ir buscar o user autenticado
+        User user = ((App) getApplication()).getUser();
 
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                myIntent = new Intent(MainActivity.this, StationsList.class);
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
+        TextView usernameLbl = (TextView) findViewById(R.id.lbl_username);
+        TextView pointsLbl = (TextView) findViewById(R.id.userPoints);
 
-        button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                myIntent = new Intent(MainActivity.this, CyclistsList.class);
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
+        usernameLbl.setText(user.displayName);
+        pointsLbl.setText(Integer.toString(user.points));
 
-        btnUserInfo = (Button) findViewById(R.id.btn_UserInfo);
-        btnUserInfo.setOnClickListener(new View.OnClickListener() {
+        listView = (ListView) findViewById(R.id.listview_trajectories);
+        lastTrajectories = new ArrayList<Trajectory>();
+
+        adapter = new ArrayAdapter<Trajectory>(this, android.R.layout.simple_list_item_1, android.R.id.text1, lastTrajectories);
+
+        new TrajectoriesTask(getResources(), adapter, (ProgressBar) findViewById(R.id.loading_trajectories), user.username).execute(true);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                myIntent = new Intent(MainActivity.this, UserInfo.class);
-                myIntent.putExtra("username", username);
-                MainActivity.this.startActivity(myIntent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list_LastTrajectories_onItemClick(parent, view, position, id);
             }
         });
+
+        listView.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void btn_BookStations_onClick(View v) {
+        myIntent = new Intent(MainActivity.this, StationsList.class);
+        MainActivity.this.startActivity(myIntent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void btn_CyclistsNearby_onClick(View v) {
+        myIntent = new Intent(MainActivity.this, CyclistsList.class);
+        MainActivity.this.startActivity(myIntent);
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void list_LastTrajectories_onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
+        String startingPoint = ((Trajectory) parent.getAdapter().getItem(position)).getStart();
+        intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
+        startActivity(intent);
     }
 }

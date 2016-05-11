@@ -2,42 +2,62 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import cmu.tecnico.R;
+import android.widget.EditText;
+
+import cmu.tecnico.ubibikemobile.asyncTasks.LoginTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.UserInfoTask;
+import cmu.tecnico.ubibikemobile.models.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
     Intent myIntent;
     Button button;
+    EditText txtUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final EditText txtUsername = (EditText) findViewById(R.id.txt_username);
+        final EditText txtPassword = (EditText) findViewById(R.id.txt_password);
         setSupportActionBar(toolbar);
 
-        button = (Button) findViewById(R.id.register);
+        button = (Button) findViewById(R.id.btn_register);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                myIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                RegisterActivity.this.startActivity(myIntent);
+                new LoginTask(RegisterActivity.this,
+                        txtUsername.getText().toString(),
+                        txtPassword.getText().toString()).execute(true);
             }
         });
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
+    public void login(String username) {
+        ((App) this.getApplication()).setUsername(username);
+        Log.v("Info", "Username received: " + username);
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                getUserData((User) msg.obj);
+            }
+        };
+        new UserInfoTask((App) getApplication(), handler, getResources()).execute(username);
+    }
+
+    public void getUserData(User user) {
+        ((App) this.getApplication()).setUser(user);
+
+        myIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        RegisterActivity.this.startActivity(myIntent);
+    }
 }

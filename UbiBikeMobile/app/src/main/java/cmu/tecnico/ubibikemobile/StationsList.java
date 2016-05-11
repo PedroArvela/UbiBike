@@ -2,8 +2,7 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import cmu.tecnico.R;
 
 public class StationsList extends AppCompatActivity {
     ArrayList<String> stationNames;
@@ -28,37 +26,29 @@ public class StationsList extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         listView = (ListView) findViewById(R.id.stations);
         stationNames = GetStationList();
-        adapter = new ArrayAdapter<String>(this,R.layout.single_list_item, R.id.list_item, stationNames);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, stationNames);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(StationsList.this, BookBycicle.class);
-                String selected = ((TextView) view.findViewById(R.id.list_item)).getText().toString();
+                String selected = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
                 intent.putExtra(STATION_NAME, selected);
                 startActivity(intent);
             }
         });
 
 
-
         listView.setAdapter(adapter);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
-
-    private ArrayList<String> GetStationList (){
+    private ArrayList<String> GetStationList() {
         ArrayList<String> stationNames = new ArrayList<String>();
         stationNames.add("Cascais");
         stationNames.add("Estoril");
