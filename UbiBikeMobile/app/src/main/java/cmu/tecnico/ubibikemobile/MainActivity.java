@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -85,20 +86,23 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
 
-                List<Trajectory> trajectory = (List<Trajectory>) msg.obj;
-                int response = (int) msg.arg1;
+                try {
+                    Trajectory trajectory = (Trajectory) msg.obj;
+                    int response = (int) msg.arg1;
 
-                if (response == 200) {
-                    String startingPoint = trajectory.get(0).getStart();
+                    if (response == 200) {
+                        String startingPoint = trajectory.getStart();
 
-                    intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG);
+                        intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG);
+                    }
+                } catch (Exception e) {
+                    Log.e("MainActivity", "Error handling TrajectoryTask\n"+e.getMessage());
                 }
             }
         };
         new TrajectoryTask((App) getApplication(), handler, getResources(), user.username).execute(trajectory);
-
     }
 }
