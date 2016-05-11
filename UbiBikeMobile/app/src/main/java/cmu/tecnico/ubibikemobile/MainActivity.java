@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         MyApplication app = (MyApplication) getApplicationContext();
-        app.wifiHandler = new WifiHandler(getApplicationContext());
+        if(app.wifiHandler==null)
+            app.wifiHandler = new WifiHandler(getApplicationContext());
         app.wifiHandler.currActivity = this;
         app.wifiHandler.wifiOn();
 

@@ -13,6 +13,10 @@ import android.util.Log;
 import android.widget.Toast;
 import android.os.AsyncTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,12 +54,13 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
     private SimWifiP2pSocketServer mSrvSocket = null;
     private SimWifiP2pBroadcastReceiver mReceiver;
     public ArrayList<String> nearbyAvailable;
-    private HashMap<String, SimWifiP2pSocket> connected;
+    public HashMap<String, String> connected;
 
 
     public WifiHandler(Context appContext){
         this.appContext = appContext;
         nearbyAvailable = new ArrayList<String>();
+        connected = new HashMap<String, String>();
 
         SimWifiP2pSocketManager.Init(appContext);
 
@@ -78,9 +83,8 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
     }
 
     public void requestGroupInfo(){
-
         if (mBound) {
-            mManager.requestGroupInfo(mChannel, this);
+            mManager.requestGroupInfo(mChannel, WifiHandler.this);
         } else {
             Log.d("WIFI_MANAGER", "Service not bound.");
         }
@@ -95,6 +99,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
             String devstr = "" + deviceName + " (" +
                     ((device == null)?"??":device.getVirtIp()) + ")\n";
             peersStr.append(devstr);
+            connected.put(deviceName, device.getVirtIp());
         }
     }
 
@@ -116,6 +121,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         @Override
         protected String doInBackground(String... params) {
             try {
+                Log.d("OUTGOING", "CLISOCKET");
                 mCliSocket = new SimWifiP2pSocket(params[0],
                         Integer.parseInt(getContext().getString(R.string.port)));
             } catch (UnknownHostException e) {
@@ -148,8 +154,8 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
         @Override
         protected Void doInBackground(String... msg) {
             try {
-                Log.d("TEST", "Sending message " + msg);
-                mCliSocket = connected.get(msg[0]);
+                Log.d("TEST", "Sending message " + msg[0] + msg[1] );
+                mCliSocket = new SimWifiP2pSocket(msg[0], 10001);
                 if(mCliSocket == null){
                     Log.d("TAG", "no such user");
                 }else {
@@ -176,11 +182,9 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            Log.d("TEST", "IncommingCommTask started (" + this.hashCode() + ").");
-
             try {
-                mSrvSocket = new SimWifiP2pSocketServer(10001);
+                if(mSrvSocket == null)
+                    mSrvSocket = new SimWifiP2pSocketServer(10001);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -209,8 +213,32 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
         @Override
         protected void onProgressUpdate(String... values) {
-            //mTextOutput.append(values[0] + "\n");
+            try {
+                JSONObject jsonObject = new JSONObject(values[0]);
+                if(jsonObject.getString("type").equals(Message.TYPE_POINTS)){
+                    addPoints(Integer.parseInt(jsonObject.getString("content")));
+                }else if (jsonObject.getString("type").equals(Message.TYPE_MSG)){
+                    messageReceived(jsonObject.getString("content"));
+                }
+            }catch(JSONException e){
+                Log.d("Error jsonMessage: ", e.getMessage());
+            }
         }
+    }
+
+    private void addPoints(int pointsToadd){
+
+    }
+
+    private void messageReceived(String pointsToadd){
+
+    }
+
+    public void sendPoints(String user,int points){
+        Message pointsMsg = new Message(points);
+        new SendCommTask().executeOnExecutor(
+                AsyncTask.THREAD_POOL_EXECUTOR, user, pointsMsg.toJSON()
+                );
     }
 
     public void wifiEnabled(boolean state){
@@ -244,6 +272,8 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
     }
 
     public void wifiOn(){
+        if(mBound)
+            return;
         Intent intent = new Intent(getContext(), SimWifiP2pService.class);
         getContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         mBound = true;
