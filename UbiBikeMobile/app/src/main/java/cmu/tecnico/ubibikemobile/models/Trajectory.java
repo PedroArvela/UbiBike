@@ -7,9 +7,10 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Trajectory {
+public class Trajectory implements Serializable {
     private String date;
     private String start;
     private ArrayList<LatLng> trajectory;

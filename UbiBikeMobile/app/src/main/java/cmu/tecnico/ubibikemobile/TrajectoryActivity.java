@@ -20,13 +20,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import cmu.tecnico.ubibikemobile.models.Trajectory;
+
 public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     String startingPoint;
-    Geocoder geoCoder;
-    Context context;
-    ArrayList<LatLng> trajectory;
+    Trajectory trajectory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,11 @@ public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        trajectory = getTrajectory();
+        trajectory = (Trajectory)getIntent().getSerializableExtra(MainActivity.TRAJECTORY_OBJECT);
+
+        //TODO Apagar quando o server estiver implementado e com o modelo correcto das trajectorias
+        if(trajectory.getTrajectory().size() == 0)
+            trajectory = new Trajectory(trajectory.getDate(), getTrajectory(), new Geocoder(this));
     }
 
     @Override
@@ -51,22 +55,25 @@ public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         mMap.addPolyline(new PolylineOptions()
-                .addAll(trajectory)
+                .addAll(trajectory.getTrajectory())
                 .width(4)
                 .color(Color.BLUE).geodesic(true));
 
-        mMap.addMarker(new MarkerOptions()
-                .position(trajectory.get(0))
-                .title(startingPoint));
+        if (trajectory.getTrajectory().size() > 1) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(trajectory.getTrajectory().get(0))
+                    .title(startingPoint));
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(trajectory.get(0), 19));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(trajectory.getTrajectory().get(0), 19));
+        }
 
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 750, null);
     }
 
     private ArrayList<LatLng> getTrajectory() {
-        //Should get an ArrayList<LatLng> from the server
-
+        //TODO Apagar quando o server estiver implementado e com o modelo correcto das trajectorias
+        //Valores de teste
+        
         ArrayList<LatLng> trajectory = new ArrayList<LatLng>();
         trajectory.add(new LatLng(38.737524, -9.136616));
         trajectory.add(new LatLng(38.735951, -9.136702));

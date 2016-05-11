@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     User user;
     ArrayList<String> lastTrajectories;
     ArrayAdapter<String> adapter;
-    static String TRAJECTORY_STARTING_POINT = "TRAJECTORY_STARTING_POINT";
+    static String TRAJECTORY_OBJECT = "TRAJECTORY_OBJECT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     int response = (int) msg.arg1;
 
                     if (response == 200) {
-                        String startingPoint = trajectory.getStart();
-
-                        intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
+                        intent.putExtra(TRAJECTORY_OBJECT, trajectory);
                         startActivity(intent);
                     } else {
                         Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG);
