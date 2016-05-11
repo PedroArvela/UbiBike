@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Trajectory> trajectory = (List<Trajectory>) msg.obj;
                 int response = (int) msg.arg1;
 
-                if(response == 200) {
+                if (response == 200) {
                     String startingPoint = trajectory.get(0).getStart();
 
                     intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);

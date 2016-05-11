@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import cmu.tecnico.ubibikemobile.asyncTasks.LoginTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.UserInfoTask;
@@ -48,7 +49,11 @@ public class RegisterActivity extends AppCompatActivity {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                getUserData((User) msg.obj);
+                if (msg.arg1 != 200) {
+                    Toast.makeText(getBaseContext(), "Failed to fetch user info", Toast.LENGTH_SHORT);
+                } else {
+                    getUserData((User) msg.obj);
+                }
             }
         };
         new UserInfoTask((App) getApplication(), handler, getResources()).execute(username);
