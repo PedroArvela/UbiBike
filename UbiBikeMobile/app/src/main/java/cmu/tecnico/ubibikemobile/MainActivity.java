@@ -2,6 +2,8 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,10 +13,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoriesTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryListTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryTask;
 import cmu.tecnico.ubibikemobile.models.Trajectory;
 import cmu.tecnico.ubibikemobile.models.User;
 
@@ -25,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     Button btnUserInfo;
     ListView listView;
-    ArrayList<Trajectory> lastTrajectories;
-    ArrayAdapter adapter;
+    User user;
+    ArrayList<String> lastTrajectories;
+    ArrayAdapter<String> adapter;
     static String TRAJECTORY_STARTING_POINT = "TRAJECTORY_STARTING_POINT";
 
     @Override
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        User user = ((App) getApplication()).getUser();
+        user = ((App) getApplication()).getUser();
 
         TextView usernameLbl = (TextView) findViewById(R.id.lbl_username);
         TextView pointsLbl = (TextView) findViewById(R.id.userPoints);
@@ -45,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
         pointsLbl.setText(Integer.toString(user.points));
 
         listView = (ListView) findViewById(R.id.listview_trajectories);
-        lastTrajectories = new ArrayList<Trajectory>();
+        lastTrajectories = new ArrayList<String>();
 
-        adapter = new ArrayAdapter<Trajectory>(this, android.R.layout.simple_list_item_1, android.R.id.text1, lastTrajectories);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, lastTrajectories);
 
-        new TrajectoriesTask(getResources(), adapter, (ProgressBar) findViewById(R.id.loading_trajectories), user.username).execute(true);
+        new TrajectoryListTask(getResources(), adapter, (ProgressBar) findViewById(R.id.loading_trajectories), user.username).execute(true);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,9 +78,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void list_LastTrajectories_onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
-        String startingPoint = ((Trajectory) parent.getAdapter().getItem(position)).getStart();
-        intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
-        startActivity(intent);
+        String trajectory = ((String) parent.getAdapter().getItem(position));
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
+
+                List<Trajectory> trajectory = (List<Trajectory>) msg.obj;
+                int response = (int) msg.arg1;
+
+                if(response == 200) {
+                    String startingPoint = trajectory.get(0).getStart();
+
+                    intent.putExtra(TRAJECTORY_STARTING_POINT, startingPoint);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG);
+                }
+            }
+        };
+        new TrajectoryTask((App) getApplication(), handler, getResources(), user.username).execute(trajectory);
+
     }
 }

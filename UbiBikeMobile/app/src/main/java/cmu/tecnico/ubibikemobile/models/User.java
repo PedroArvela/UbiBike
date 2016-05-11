@@ -7,7 +7,7 @@ public class User {
     public String username;
     public String displayName;
     public int points;
-    public Map<Date, Trajectory> recentTrajectories;
+    public Map<String, Trajectory> recentTrajectories;
 
     public User(String username, String displayName) {
         this.username = username;

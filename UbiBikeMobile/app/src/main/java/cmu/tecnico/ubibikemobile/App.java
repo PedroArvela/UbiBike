@@ -5,7 +5,8 @@ import android.app.Application;
 import cmu.tecnico.ubibikemobile.models.User;
 
 public class App extends Application {
-    public final static int MESSAGE_USERNAME = 0;
+    public final static int MESSAGE_USER = 0;
+    public final static int MESSAGE_TRAJECTORY = 1;
 
     private String username;
     private User user;
