@@ -123,7 +123,10 @@ public class Server {
 				result.add(station);
 			}
 		} else if (path.size() == 2 && manager.stations.containsKey(path.get(1))) {
-			result.add(manager.stations.get(path.get(1)).coordinates);
+			Station station = manager.stations.get(path.get(1));
+			result.add(station.coordinates);
+			result.add(new Integer(station.freeBikes).toString());
+			result.add(new Integer(station.reservedBikes).toString());
 		} else {
 			code = 404;
 			result.add("Station not found");

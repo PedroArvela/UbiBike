@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Pair;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +13,21 @@ import java.util.List;
 import cmu.tecnico.ubibikemobile.App;
 import cmu.tecnico.ubibikemobile.helpers.URLHelper;
 
-public class StationListTask extends AsyncTask<Boolean, Boolean, List<String>> {
+public class StationTask extends AsyncTask<String, Boolean, List<String>> {
     App app;
     Handler handler;
     Resources resources;
 
     int responseCode = 0;
 
-    public StationListTask(App app, Handler handler, Resources resources) {
+    public StationTask(App app, Handler handler, Resources resources) {
         this.app = app;
         this.handler = handler;
         this.resources = resources;
     }
 
     @Override
-    protected List<String> doInBackground(Boolean... params) {
+    protected List<String> doInBackground(String... params) {
         List<String> trajectories = new ArrayList<String>();
 
         try {

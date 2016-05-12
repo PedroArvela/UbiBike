@@ -12,17 +12,6 @@
     tools:context="cmu.tecnico.ubibikemobile.BookBycicle"
     tools:showIn="@layout/activity_book_bycicle">
 
-    <TextView
-        android:id="@+id/textView_availableBikes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="89dp"
-        android:text="Number of available Bikes: "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <Button
         android:id="@+id/btn_bookBike"
         android:layout_width="wrap_content"
@@ -32,24 +21,32 @@
         android:text="Book Bike" />
 
     <TextView
-        android:id="@+id/textView_stationName"
+        android:id="@+id/lbl_noBikeAvailable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="Station: " />
-
-    <TextView
-        android:id="@+id/textView_noBikeAvailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView_availableBikes"
         android:layout_marginTop="41dp"
         android:text="No Bikes Available To Book!"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#f80707"
         android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Estação"
+        android:id="@+id/lbl_stationName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Available Bikes"
+        android:id="@+id/lbl_freeBikes"
+        android:layout_alignTop="@+id/lbl_noBikeAvailable"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
