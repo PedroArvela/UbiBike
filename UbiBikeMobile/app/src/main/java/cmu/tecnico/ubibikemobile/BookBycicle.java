@@ -30,9 +30,9 @@ public class BookBycicle extends AppCompatActivity {
         Intent prevIntent = getIntent();
         stationName = prevIntent.getStringExtra(StationsList.STATION_NAME);
 
-        ((TextView) findViewById(R.id.textView_stationName)).append(" " + stationName);
+        ((TextView) findViewById(R.id.lbl_stationName)).append(" " + stationName);
 
-        textViewAvailableBikes = (TextView) findViewById(R.id.textView_availableBikes);
+        textViewAvailableBikes = (TextView) findViewById(R.id.lbl_freeBikes);
         textViewNoBikesAvailable = (TextView) findViewById(R.id.lbl_noBikeAvailable);
         btnBookBike = (Button) findViewById(R.id.btn_bookBike);
 
