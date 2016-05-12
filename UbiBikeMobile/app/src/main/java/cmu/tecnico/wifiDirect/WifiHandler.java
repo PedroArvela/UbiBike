@@ -146,7 +146,8 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
     public void sendMessage(String user, String message){
         if (mBound) {
-            new SendCommTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user, message);
+            Message textMsg = new Message(message);
+            new SendCommTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user, textMsg.toJSON());
         }
     }
 
@@ -194,6 +195,7 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
                 try {
                     SimWifiP2pSocket sock = mSrvSocket.accept();
                     try {
+                        Log.d("RCV MSG", "received a message");
                         BufferedReader sockIn = new BufferedReader(
                                 new InputStreamReader(sock.getInputStream()));
                         String st = sockIn.readLine();
@@ -215,11 +217,17 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
         @Override
         protected void onProgressUpdate(String... values) {
+            Log.d("VALUES", ""+values.length);
+            for(int i = 0; i < values.length; i++){
+                Log.d("VALUES", values[i]);
+            }
             try {
                 JSONObject jsonObject = new JSONObject(values[0]);
                 if(jsonObject.getString("type").equals(Message.TYPE_POINTS)){
+                    Log.d("RCV POINTS", "received POINTS");
                     addPoints(Integer.parseInt(jsonObject.getString("content")));
                 }else if (jsonObject.getString("type").equals(Message.TYPE_MSG)){
+                    Log.d("RCV MSG", "received a text message");
                     messageReceived("",jsonObject.getString("content"));
                 }
             }catch(JSONException e){
@@ -230,18 +238,22 @@ public class WifiHandler implements SimWifiP2pManager.PeerListListener,SimWifiP2
 
     private void addPoints(int pointsToadd){
         ((App)appContext).getUser().points += pointsToadd;
+        if(currActivity instanceof MainActivity)
+            ((MainActivity)currActivity).pointsLbl.setText(Integer.toString(((App)appContext).getUser().points));
     }
 
     private void messageReceived(String sender, String message){
         //se estiver na actividade das mensagens, adicionar ao ecra
         if(currActivity instanceof SendMessage) {
             String currhistory = ((SendMessage)currActivity).history.getText().toString() + '\n' + "Me: " + message ;
+            Log.d("Text",currhistory);
             ((SendMessage)currActivity).history.setText(currhistory);
         }
         saveFile(sender, message);
     }
 
     public void saveFile(String sender, String message){
+        Log.d("SAVE ON FILE", "");
         msgHistory.writeFile(sender, message);
     }
 

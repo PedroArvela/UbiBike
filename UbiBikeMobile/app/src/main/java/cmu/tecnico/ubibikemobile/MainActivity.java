@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     Button btnUserInfo;
     ListView listView;
+    public TextView pointsLbl;
     User user;
     ArrayList<String> lastTrajectories;
     ArrayAdapter<String> adapter;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         user = ((App) getApplication()).getUser();
 
         TextView usernameLbl = (TextView) findViewById(R.id.lbl_username);
-        TextView pointsLbl = (TextView) findViewById(R.id.userPoints);
+        pointsLbl = (TextView) findViewById(R.id.userPoints);
 
         App app = (App) getApplicationContext();
         if(app.getWifiHandler()==null)
@@ -74,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        pointsLbl.setText(Integer.toString(user.points));
     }
 
     public void btn_BookStations_onClick(View v) {
