@@ -19,6 +19,7 @@ public class SendMessage extends AppCompatActivity {
     public TextView history;
     EditText newMsg;
     Button button;
+    String cyclistName;
     ConcreteWifiHandler wifiHandler;
 
     @Override
@@ -28,7 +29,7 @@ public class SendMessage extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         Intent prevIntent = getIntent();
-        final String cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
+        cyclistName = prevIntent.getStringExtra(CyclistsList.CYCLER_NAME);
         Toast toast=Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
         toast.show();
 
@@ -46,7 +47,7 @@ public class SendMessage extends AppCompatActivity {
         history = (TextView) findViewById(R.id.chat_history);
         newMsg = (EditText) findViewById(R.id.new_sms);
         button = (Button) findViewById(R.id.SubmitMsg);
-        wifiHandler.readFile(cyclistName);
+        history.setText( wifiHandler.readFile(cyclistName));
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -60,6 +61,13 @@ public class SendMessage extends AppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        history.setText(wifiHandler.readFile(cyclistName));
     }
 
 }
