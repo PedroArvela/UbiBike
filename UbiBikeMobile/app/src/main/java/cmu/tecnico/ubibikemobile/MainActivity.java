@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> lastTrajectories;
     ArrayAdapter<String> adapter;
     static String TRAJECTORY_OBJECT = "TRAJECTORY_OBJECT";
+    static String USERNAME_EXTRA = "USERNAME_EXTRA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,27 +97,9 @@ public class MainActivity extends AppCompatActivity {
     public void list_LastTrajectories_onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String trajectory = ((String) parent.getAdapter().getItem(position));
 
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
-
-                try {
-                    Trajectory trajectory = (Trajectory) msg.obj;
-                    int response = (int) msg.arg1;
-
-                    if (response == 200) {
-                        intent.putExtra(TRAJECTORY_OBJECT, trajectory);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                    Log.e("MainActivity", "Error handling TrajectoryTask\n"+e.getMessage());
-                }
-            }
-        };
-        new TrajectoryTask((App) getApplication(), handler, getResources(), user.username).execute(trajectory);
-
+        Intent intent = new Intent(MainActivity.this, TrajectoryActivity.class);
+        intent.putExtra(TRAJECTORY_OBJECT, trajectory);
+        intent.putExtra(USERNAME_EXTRA, user.username);
+        startActivity(intent);
     }
 }
