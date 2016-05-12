@@ -51,9 +51,10 @@ public class SendMessage extends AppCompatActivity {
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String newContent = history.getText().toString() + '\n' + "Me: " + newMsg.getText().toString();
+                String writtenMsg = newMsg.getText().toString();
+                String newContent = history.getText().toString() + '\n' + "Me: " +  writtenMsg;
                 history.setText(newContent);
-                wifiHandler.sendMessage(cyclistName, newContent);
+                wifiHandler.sendMessage(cyclistName, writtenMsg);
                 wifiHandler.saveFile(cyclistName, newContent);
                 newMsg.setText("");
                 chatScroll.fullScroll(ScrollView.FOCUS_DOWN);
