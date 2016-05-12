@@ -244,7 +244,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
             String currhistory = ((SendMessage) currActivity).history.getText().toString() + '\n' + sender +": " + message;
             ((SendMessage) currActivity).history.setText(currhistory);
         }
-        saveFile(sender, message);
+        saveFile(sender, sender +": " + message);
     }
 
     public void saveFile(String sender, String message) {
