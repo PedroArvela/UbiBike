@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="protocol">http</string>
-    <string name="domain">web.tecnico.ulisboa.pt</string>
-    <integer name="port">80</integer>
-    <string name="base">/~jose.pedro.arvela/ubibike/</string>
+    <string name="domain">gallifrey.rnl.tecnico.ulisboa.pt</string>
+    <integer name="port">8080</integer>
+    <string name="base">/</string>
 </resources>

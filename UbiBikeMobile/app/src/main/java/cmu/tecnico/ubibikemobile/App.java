@@ -10,6 +10,7 @@ public class App extends Application {
     public final static int MESSAGE_TRAJECTORY = 1;
     public final static int MESSAGE_CONFIRM = 2;
     public final static int MESSAGE_DENY = 3;
+    public final static int MESSAGE_STATIONS = 4;
 
     private String username;
     private User user;

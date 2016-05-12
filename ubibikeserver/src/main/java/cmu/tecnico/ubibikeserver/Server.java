@@ -19,6 +19,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import cmu.tecnico.ubibikeserver.domain.Manager;
+import cmu.tecnico.ubibikeserver.domain.Station;
 import cmu.tecnico.ubibikeserver.domain.Trajectory;
 import cmu.tecnico.ubibikeserver.domain.User;
 import cmu.tecnico.ubibikeserver.domain.exceptions.NotFoundException;
@@ -68,7 +69,7 @@ public class Server {
 					} else {
 						Trajectory t = user.trajectories.get(path.get(3));
 						result.add(t.date);
-						for(String coord : t.coordinates) {
+						for (String coord : t.coordinates) {
 							result.add(coord);
 						}
 					}
@@ -117,6 +118,17 @@ public class Server {
 		int code = 200;
 		List<String> result = new ArrayList<String>();
 
+		if (path.size() == 1) {
+			for (String station : manager.stations.keySet()) {
+				result.add(station);
+			}
+		} else if (path.size() == 2 && manager.stations.containsKey(path.get(1))) {
+			result.add(manager.stations.get(path.get(1)).coordinates);
+		} else {
+			code = 404;
+			result.add("Station not found");
+		}
+
 		return new ImmutablePair<Integer, List<String>>(code, result);
 	}
 
@@ -127,7 +139,7 @@ public class Server {
 		// Parse client request
 		String request = in.readLine();
 		String[] requestParams = request.split(" ");
-		String pathQueryString = requestParams[1];
+		String pathQueryString = java.net.URLDecoder.decode(requestParams[1], "UTF-8");;
 		String[] pathQuery = pathQueryString.split("\\?", 2);
 
 		String pathString = pathQuery[0];
@@ -159,6 +171,9 @@ public class Server {
 			}
 		} else if (path.size() == 1) {
 			switch (path.get(0)) {
+			case "station":
+				response = processStation(path, queries);
+				break;
 			case "register":
 				response = registerUser(path, queries);
 				break;

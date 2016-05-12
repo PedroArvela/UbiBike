@@ -2,6 +2,8 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cmu.tecnico.ubibikemobile.asyncTasks.StationListTask;
 
 public class StationsList extends AppCompatActivity {
     ArrayList<String> stationNames;
@@ -30,7 +35,7 @@ public class StationsList extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         listView = (ListView) findViewById(R.id.stations);
-        stationNames = GetStationList();
+        stationNames = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, stationNames);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,8 +49,20 @@ public class StationsList extends AppCompatActivity {
             }
         });
 
-
         listView.setAdapter(adapter);
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what == App.MESSAGE_STATIONS && msg.arg1 == 200) {
+                    for (String station : (List<String>) msg.obj) {
+                        adapter.add(station);
+                    }
+                }
+            }
+        };
+
+        new StationListTask((App) getApplication(), handler, getResources()).execute();
     }
 
     private ArrayList<String> GetStationList() {
