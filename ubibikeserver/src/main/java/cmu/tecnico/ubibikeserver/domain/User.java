@@ -8,7 +8,7 @@ public class User {
 	public String password;
 	public String displayName;
 	public int points;
-	public Map<String, String> trajectory;
+	public Map<String, Trajectory> trajectories;
 
 	public User(String username, String password, String displayName) {
 		this.username = username;
@@ -16,6 +16,6 @@ public class User {
 		this.displayName = displayName;
 		this.points = 0;
 
-		this.trajectory = new TreeMap<String, String>();
+		this.trajectories = new TreeMap<String, Trajectory>();
 	}
 }

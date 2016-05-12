@@ -19,6 +19,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import cmu.tecnico.ubibikeserver.domain.Manager;
+import cmu.tecnico.ubibikeserver.domain.Trajectory;
 import cmu.tecnico.ubibikeserver.domain.User;
 import cmu.tecnico.ubibikeserver.domain.exceptions.NotFoundException;
 
@@ -40,7 +41,7 @@ public class Server {
 		List<String> result = new ArrayList<String>();
 
 		try {
-			if (path.size() < 2) {
+			if (path.size() < 3) {
 				code = 400;
 				result.add("Missing arguments");
 			} else {
@@ -58,6 +59,19 @@ public class Server {
 					break;
 				case "points":
 					result.add(new Integer(user.points).toString());
+					break;
+				case "trajectories":
+					if (path.size() == 3) {
+						for (String date : user.trajectories.keySet()) {
+							result.add(date);
+						}
+					} else {
+						Trajectory t = user.trajectories.get(path.get(3));
+						result.add(t.date);
+						for(String coord : t.coordinates) {
+							result.add(coord);
+						}
+					}
 					break;
 				default:
 					throw new NotFoundException(path.get(2));
@@ -127,7 +141,7 @@ public class Server {
 		Map<String, String> queries = processQueries(queryString);
 
 		Pair<Integer, List<String>> response;
-		
+
 		System.out.println(path);
 		System.out.println(queries);
 
@@ -156,7 +170,7 @@ public class Server {
 			response = new ImmutablePair<Integer, List<String>>(400, new ArrayList<String>());
 			response.getRight().add("Malformed request");
 		}
-		
+
 		System.out.println("Response: [" + response.getLeft() + "]");
 
 		out.print("HTTP/1.1 " + response.getLeft() + " \r\n");
