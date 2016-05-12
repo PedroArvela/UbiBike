@@ -15,13 +15,94 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import cmu.tecnico.ubibikeserver.domain.Manager;
+import cmu.tecnico.ubibikeserver.domain.User;
+import cmu.tecnico.ubibikeserver.domain.exceptions.NotFoundException;
+
 public class Server {
 	private int port;
 	ExecutorService threadPool;
 
+	Manager manager;
+
 	public Server(int port) {
 		this.port = port;
 		this.threadPool = Executors.newCachedThreadPool();
+
+		this.manager = Manager.getInstance();
+	}
+
+	private Pair<Integer, List<String>> processUser(List<String> path, Map<String, String> queries) {
+		int code = 200;
+		List<String> result = new ArrayList<String>();
+
+		try {
+			if (path.size() < 2) {
+				code = 400;
+				result.add("Missing arguments");
+			} else {
+				User user = manager.getUser(path.get(1));
+
+				switch (path.get(2)) {
+				case "password":
+					result.add(user.password);
+					break;
+				case "username":
+					result.add(user.username);
+					break;
+				case "name":
+					result.add(user.displayName);
+					break;
+				case "points":
+					result.add(new Integer(user.points).toString());
+					break;
+				default:
+					throw new NotFoundException(path.get(2));
+				}
+			}
+		} catch (NotFoundException e) {
+			code = 404;
+			result.clear();
+			result.add("User not found");
+		}
+
+		return new ImmutablePair<Integer, List<String>>(code, result);
+	}
+
+	private Pair<Integer, List<String>> registerUser(List<String> path, Map<String, String> queries) {
+		int code = 200;
+		List<String> result = new ArrayList<String>();
+
+		if (queries.containsKey("username") && queries.containsKey("password") && queries.containsKey("name")) {
+			String username = queries.get("username");
+			String password = queries.get("password");
+			String displayName = queries.get("name");
+
+			if (!manager.users.containsKey(username)) {
+				User user = new User(username, password, displayName);
+
+				manager.users.put(username, user);
+			} else {
+				code = 301;
+				result.add("Forbidden");
+			}
+		} else {
+			code = 400;
+			result.add("Malformed request");
+		}
+
+		return new ImmutablePair<Integer, List<String>>(code, result);
+
+	}
+
+	private Pair<Integer, List<String>> processStation(List<String> path, Map<String, String> queries) {
+		int code = 200;
+		List<String> result = new ArrayList<String>();
+
+		return new ImmutablePair<Integer, List<String>>(code, result);
 	}
 
 	public void process(Socket s) throws IOException {
@@ -31,15 +112,48 @@ public class Server {
 		// Parse client request
 		String request = in.readLine();
 		String[] requestParams = request.split(" ");
-		String path = requestParams[1];
+		String pathQueryString = requestParams[1];
+		String[] pathQuery = pathQueryString.split("&", 2);
 
-		out.print("HTTP/1.1 200 \r\n");
-		out.print("Content-Type: text/plain\r\n");
+		String pathString = pathQuery[0];
+		String queryString = "";
+
+		if (pathQuery.length == 2) {
+			queryString = pathQuery[1];
+		}
+
+		List<String> path = processPath(pathString);
+		Map<String, String> queries = processQueries(queryString);
+
+		Pair<Integer, List<String>> response;
+
+		if (path.size() >= 2) {
+			switch (path.get(0)) {
+			case "user":
+				response = processUser(path, queries);
+				break;
+			case "register":
+				response = registerUser(path, queries);
+			case "station":
+				response = processStation(path, queries);
+				break;
+			default:
+				response = new ImmutablePair<Integer, List<String>>(404, new ArrayList<String>());
+				response.getRight().add("Resource not found");
+			}
+		} else {
+			response = new ImmutablePair<Integer, List<String>>(400, new ArrayList<String>());
+			response.getRight().add("Malformed request");
+		}
+
+		out.print("HTTP/1.1 " + response.getLeft() + " \r\n");
+		out.print("Content-Type: text/plain; charset=utf-8\r\n");
 		out.print("Connection: close\r\n");
 		out.print("\r\n");
 
-		// INSERT CODE HERE
-		out.print("OK\r\n");
+		for (String responseLine : response.getRight()) {
+			out.println(responseLine);
+		}
 
 		out.close();
 		in.close();
