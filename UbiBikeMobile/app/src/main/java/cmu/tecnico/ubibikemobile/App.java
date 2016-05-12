@@ -8,6 +8,8 @@ import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 public class App extends Application {
     public final static int MESSAGE_USER = 0;
     public final static int MESSAGE_TRAJECTORY = 1;
+    public final static int MESSAGE_CONFIRM = 2;
+    public final static int MESSAGE_DENY = 3;
 
     private String username;
     private User user;

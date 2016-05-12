@@ -4,65 +4,64 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import cmu.tecnico.ubibikemobile.asyncTasks.LoginTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.RegisterTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.UserInfoTask;
 import cmu.tecnico.ubibikemobile.models.User;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    Intent myIntent;
-    Button button;
-    EditText txtUsername;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        final EditText txtUsername = (EditText) findViewById(R.id.txt_username);
-        final EditText txtPassword = (EditText) findViewById(R.id.txt_password);
         setSupportActionBar(toolbar);
-
-        button = (Button) findViewById(R.id.btn_register);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                new LoginTask(RegisterActivity.this,
-                        txtUsername.getText().toString(),
-                        txtPassword.getText().toString()).execute(true);
-            }
-        });
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    public void login(String username) {
-        ((App) this.getApplication()).setUsername(username);
-        Log.v("Info", "Username received: " + username);
+    private final Handler registerHandle = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == App.MESSAGE_CONFIRM) {
+                ((App) RegisterActivity.this.getApplication()).setUsername(username);
 
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.arg1 != 200) {
-                    Toast.makeText(getBaseContext(), "Failed to fetch user info", Toast.LENGTH_SHORT);
-                } else {
-                    getUserData((User) msg.obj);
-                }
+                final Handler handler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if (msg.arg1 != 200) {
+                            Toast.makeText(getBaseContext(), "Failed to fetch user info", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent;
+                            ((App) RegisterActivity.this.getApplication()).setUser((User) msg.obj);
+
+                            intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            RegisterActivity.this.startActivity(intent);
+                        }
+                    }
+                };
+                new UserInfoTask((App) getApplication(), handler, getResources()).execute(username);
+            } else {
+                ((EditText) RegisterActivity.this.findViewById(R.id.txt_username)).setError("User already exists");
             }
-        };
-        new UserInfoTask((App) getApplication(), handler, getResources()).execute(username);
-    }
+        }
+    };
 
-    public void getUserData(User user) {
-        ((App) this.getApplication()).setUser(user);
+    public void btn_Register_onClick(View v) {
+        username = ((EditText) RegisterActivity.this.findViewById(R.id.txt_username)).getText().toString();
+        String password = ((EditText) RegisterActivity.this.findViewById(R.id.txt_password)).getText().toString();
+        String displayName = ((EditText) RegisterActivity.this.findViewById(R.id.txt_displayName)).getText().toString();
 
-        myIntent = new Intent(RegisterActivity.this, MainActivity.class);
-        RegisterActivity.this.startActivity(myIntent);
+        new RegisterTask((App) getApplication(), registerHandle, getResources()).execute(username, password, displayName);
     }
 }

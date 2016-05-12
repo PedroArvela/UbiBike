@@ -14,14 +14,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import cmu.tecnico.ubibikemobile.R;
-import cmu.tecnico.ubibikemobile.RegisterActivity;
+import cmu.tecnico.ubibikemobile.LoginActivity;
 
 public class LoginTask extends AsyncTask<Boolean, Boolean, Pair<String, Boolean>> {
-    RegisterActivity activity;
+    LoginActivity activity;
     String username;
     String password;
 
-    public LoginTask(RegisterActivity activity, String username, String password) {
+    public LoginTask(LoginActivity activity, String username, String password) {
         this.activity = activity;
         this.username = username;
         this.password = password;

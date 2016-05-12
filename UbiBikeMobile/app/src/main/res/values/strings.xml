@@ -2,7 +2,7 @@
     <string name="port">10001</string>
     <string name="app_name">UbiBikeMobile</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_register">Register Activity</string>
+    <string name="title_activity_login">Login Activity</string>
     <string name="title_activity_stations_list">Stations List</string>
     <string name="title_activity_book_bycicle">Book Bycicle</string>
     <string name="title_activity_cyclists_list">Cyclists List</string>
@@ -18,4 +18,7 @@
     <string name="lbl_username_placeholder">User</string>
     <string name="lbl_points">points</string>
     <string name="title_activity_trajectory">Last Trajectories</string>
+    <string name="button_login">Login</string>
+    <string name="button_register">Register</string>
+    <string name="title_activity_register">Register Activity</string>
 </resources>

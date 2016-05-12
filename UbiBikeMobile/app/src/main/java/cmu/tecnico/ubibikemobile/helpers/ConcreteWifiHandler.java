@@ -51,6 +51,24 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener, 
     public ArrayList<String> nearbyAvailable;
     public HashMap<String, String> connected;
 
+    private ServiceConnection mConnection = new ServiceConnection() {
+        // callbacks for service binding, passed to bindService()
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mManager = new SimWifiP2pManager(new Messenger(service));
+            mChannel = mManager.initialize(currActivity.getApplication(), getContext().getMainLooper(), null);
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mManager = null;
+            mChannel = null;
+            mBound = false;
+        }
+    };
+
     public ConcreteWifiHandler(Context appContext) {
         this.appContext = appContext;
         nearbyAvailable = new ArrayList<String>();
@@ -311,22 +329,4 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener, 
             mBound = false;
         }
     }
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        // callbacks for service binding, passed to bindService()
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            mManager = new SimWifiP2pManager(new Messenger(service));
-            mChannel = mManager.initialize(currActivity.getApplication(), getContext().getMainLooper(), null);
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mManager = null;
-            mChannel = null;
-            mBound = false;
-        }
-    };
 }

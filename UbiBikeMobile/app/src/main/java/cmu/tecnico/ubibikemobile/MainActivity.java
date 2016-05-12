@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra(TRAJECTORY_OBJECT, trajectory);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG);
+                        Toast.makeText(getBaseContext(), "Failed to get location", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Log.e("MainActivity", "Error handling TrajectoryTask\n"+e.getMessage());

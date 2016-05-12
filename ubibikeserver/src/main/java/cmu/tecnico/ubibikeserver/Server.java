@@ -85,6 +85,7 @@ public class Server {
 				User user = new User(username, password, displayName);
 
 				manager.users.put(username, user);
+				result.add("OK");
 			} else {
 				code = 301;
 				result.add("Forbidden");
@@ -113,7 +114,7 @@ public class Server {
 		String request = in.readLine();
 		String[] requestParams = request.split(" ");
 		String pathQueryString = requestParams[1];
-		String[] pathQuery = pathQueryString.split("&", 2);
+		String[] pathQuery = pathQueryString.split("\\?", 2);
 
 		String pathString = pathQuery[0];
 		String queryString = "";
@@ -126,16 +127,26 @@ public class Server {
 		Map<String, String> queries = processQueries(queryString);
 
 		Pair<Integer, List<String>> response;
+		
+		System.out.println(path);
+		System.out.println(queries);
 
 		if (path.size() >= 2) {
 			switch (path.get(0)) {
 			case "user":
 				response = processUser(path, queries);
 				break;
-			case "register":
-				response = registerUser(path, queries);
 			case "station":
 				response = processStation(path, queries);
+				break;
+			default:
+				response = new ImmutablePair<Integer, List<String>>(404, new ArrayList<String>());
+				response.getRight().add("Resource not found");
+			}
+		} else if (path.size() == 1) {
+			switch (path.get(0)) {
+			case "register":
+				response = registerUser(path, queries);
 				break;
 			default:
 				response = new ImmutablePair<Integer, List<String>>(404, new ArrayList<String>());
@@ -145,6 +156,8 @@ public class Server {
 			response = new ImmutablePair<Integer, List<String>>(400, new ArrayList<String>());
 			response.getRight().add("Malformed request");
 		}
+		
+		System.out.println("Response: [" + response.getLeft() + "]");
 
 		out.print("HTTP/1.1 " + response.getLeft() + " \r\n");
 		out.print("Content-Type: text/plain; charset=utf-8\r\n");
