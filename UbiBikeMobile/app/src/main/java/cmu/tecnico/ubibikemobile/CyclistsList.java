@@ -1,18 +1,10 @@
 package cmu.tecnico.ubibikemobile;
 
-import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Messenger;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,19 +13,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cmu.tecnico.wifiDirect.WifiHandler;
-import pt.inesc.termite.wifidirect.SimWifiP2pDevice;
-import pt.inesc.termite.wifidirect.SimWifiP2pDeviceList;
-import pt.inesc.termite.wifidirect.SimWifiP2pInfo;
-import pt.inesc.termite.wifidirect.SimWifiP2pManager;
-import pt.inesc.termite.wifidirect.service.SimWifiP2pService;
+import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 
 public class CyclistsList extends AppCompatActivity {
     ArrayList<String> cyclistsNames;
     ArrayAdapter adapter;
     ListView listView;
     public static String CYCLER_NAME = "cyclerName";
-    private WifiHandler wifiHandler;
+    private ConcreteWifiHandler wifiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

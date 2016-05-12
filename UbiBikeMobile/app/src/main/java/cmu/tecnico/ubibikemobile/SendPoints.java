@@ -10,14 +10,14 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-import cmu.tecnico.wifiDirect.WifiHandler;
+import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 
 public class SendPoints extends AppCompatActivity {
 
     Intent myIntent;
     Button button;
     NumberPicker pointsField;
-    WifiHandler wifiHandler;
+    ConcreteWifiHandler wifiHandler;
     String cyclistName;
     //static String CYCLER_NAME = "cyclerName";
 

@@ -17,13 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryListTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryTask;
 import cmu.tecnico.ubibikemobile.models.Trajectory;
 import cmu.tecnico.ubibikemobile.models.User;
-import cmu.tecnico.wifiDirect.WifiHandler;
+import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         App app = (App) getApplicationContext();
         if(app.getWifiHandler()==null)
-            app.setWifiHandler(new WifiHandler(getApplicationContext()));
+            app.setWifiHandler(new ConcreteWifiHandler(getApplicationContext()));
         app.getWifiHandler().currActivity = this;
         app.getWifiHandler().wifiOn();
 

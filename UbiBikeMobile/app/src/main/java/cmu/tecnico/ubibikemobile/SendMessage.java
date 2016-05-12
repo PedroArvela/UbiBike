@@ -2,8 +2,6 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,14 +12,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import cmu.tecnico.wifiDirect.WifiHandler;
+import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 
 public class SendMessage extends AppCompatActivity {
 
     public TextView history;
     EditText newMsg;
     Button button;
-    WifiHandler wifiHandler;
+    ConcreteWifiHandler wifiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
