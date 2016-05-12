@@ -10,16 +10,18 @@ public class Message {
     String type;
     String content;
     String toUser;
+    String fromUser;
 
     String hash;
 
     public static final String TYPE_POINTS = "POINTS";
     public static final String TYPE_MSG = "MSG";
 
-    public Message(String type, String content, String toUser) {
+    public Message(String type, String content, String toUser, String fromUser) {
         this.type = type;
         this.content = content;
         this.toUser = toUser;
+        this.fromUser = fromUser;
     }
 
     public Message(int points) {
@@ -27,9 +29,23 @@ public class Message {
         this.content = "" + points;
     }
 
+    public Message(int points, String toUser, String fromUser) {
+        this.type = TYPE_POINTS;
+        this.content = "" + points;
+        this.toUser = toUser;
+        this.fromUser = fromUser;
+    }
+
     public Message(String msg) {
         this.type = TYPE_MSG;
         this.content = msg;
+    }
+
+    public Message(String msg, String toUser, String fromUser) {
+        this.type = TYPE_MSG;
+        this.content = msg;
+        this.toUser = toUser;
+        this.fromUser = fromUser;
     }
 
     public String toJSON() {
@@ -37,6 +53,8 @@ public class Message {
         try {
             jsonObject.put("type", type);
             jsonObject.put("content", content);
+            jsonObject.put("toUser", toUser);
+            jsonObject.put("fromUser", fromUser);
         } catch (JSONException e) {
             e.toString();
         }

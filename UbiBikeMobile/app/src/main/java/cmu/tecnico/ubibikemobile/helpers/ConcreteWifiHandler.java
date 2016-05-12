@@ -144,10 +144,10 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         }
     }
 
-    public void sendMessage(String user, String message) {
+    public void sendMessage(String sender, String message) {
         if (mBound) {
-            Message textMsg = new Message(message);
-            new SendCommTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user, textMsg.toJSON());
+            Message textMsg = new Message(message, sender, ((App)appContext).getUser().displayName);
+            new SendCommTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, sender, textMsg.toJSON());
         }
     }
 
@@ -217,10 +217,6 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
 
         @Override
         protected void onProgressUpdate(String... values) {
-            Log.d("VALUES", "" + values.length);
-            for (int i = 0; i < values.length; i++) {
-                Log.d("VALUES", values[i]);
-            }
             try {
                 JSONObject jsonObject = new JSONObject(values[0]);
                 if (jsonObject.getString("type").equals(Message.TYPE_POINTS)) {
@@ -228,7 +224,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
                     addPoints(Integer.parseInt(jsonObject.getString("content")));
                 } else if (jsonObject.getString("type").equals(Message.TYPE_MSG)) {
                     Log.d("RCV MSG", "received a text message");
-                    messageReceived("", jsonObject.getString("content"));
+                    messageReceived(jsonObject.getString("fromUser"), jsonObject.getString("content"));
                 }
             } catch (JSONException e) {
                 Log.d("Error jsonMessage: ", e.getMessage());
@@ -245,8 +241,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
     private void messageReceived(String sender, String message) {
         //se estiver na actividade das mensagens, adicionar ao ecra
         if (currActivity instanceof SendMessage) {
-            String currhistory = ((SendMessage) currActivity).history.getText().toString() + '\n' + "Me: " + message;
-            Log.d("Text", currhistory);
+            String currhistory = ((SendMessage) currActivity).history.getText().toString() + '\n' + sender +": " + message;
             ((SendMessage) currActivity).history.setText(currhistory);
         }
         saveFile(sender, message);
