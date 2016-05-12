@@ -3,6 +3,7 @@ package cmu.tecnico.ubibikemobile;
 import android.app.Application;
 
 import cmu.tecnico.ubibikemobile.models.User;
+import cmu.tecnico.wifiDirect.WifiHandler;
 
 public class App extends Application {
     public final static int MESSAGE_USER = 0;
@@ -26,6 +27,7 @@ public class App extends Application {
 
     public void setUser(User user) {
         this.user = user;
+    }
 
     public WifiHandler getWifiHandler() {
         return wifiHandler;

@@ -1,17 +1,14 @@
-﻿package cmu.tecnico.ubibikemobile.asyncTasks;
+package cmu.tecnico.ubibikemobile.asyncTasks;
 
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Pair;
-
 import java.io.IOException;
 import java.util.List;
-
 import cmu.tecnico.ubibikemobile.App;
 import cmu.tecnico.ubibikemobile.helpers.URLHelper;
-
 import cmu.tecnico.ubibikemobile.models.User;
 
 public class UserInfoTask extends AsyncTask<String, Boolean, User> {
