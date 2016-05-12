@@ -1,3 +1,19 @@
+package cmu.tecnico.ubibikemobile.helpers;
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.AsyncTask;
+import android.os.IBinder;
+import android.os.Messenger;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +26,9 @@ import java.util.Map;
 import cmu.tecnico.ubibikemobile.*;
 
 
+import cmu.tecnico.wifiDirect.Message;
+import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
+import cmu.tecnico.wifiDirect.WifiHandler;
 import pt.inesc.termite.wifidirect.SimWifiP2pBroadcast;
 import pt.inesc.termite.wifidirect.SimWifiP2pDevice;
 import pt.inesc.termite.wifidirect.SimWifiP2pDeviceList;
@@ -39,7 +58,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
     public HashMap<String, String> connected;
 
 
-    public ConcreteWifiHandler (Context appContext){
+    public ConcreteWifiHandler(Context appContext) {
         this.appContext = appContext;
         nearbyAvailable = new ArrayList<String>();
         connected = new HashMap<String, String>();
@@ -57,7 +76,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         getContext().registerReceiver(mReceiver, filter);
     }
 
-    public void requestPeers(){
+    public void requestPeers() {
         if (mBound) {
             mManager.requestPeers(mChannel, this);
         } else {
@@ -65,9 +84,9 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         }
     }
 
-    public void requestGroupInfo(){
+    public void requestGroupInfo() {
         if (mBound) {
-            mManager.requestGroupInfo(mChannel, WifiHandler.this);
+            mManager.requestGroupInfo(mChannel, ConcreteWifiHandler.this);
         } else {
             Log.d("WIFI_MANAGER", "Service not bound.");
         }
@@ -80,7 +99,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         for (String deviceName : simWifiP2pInfo.getDevicesInNetwork()) {
             SimWifiP2pDevice device = simWifiP2pDeviceList.getByName(deviceName);
             String devstr = "" + deviceName + " (" +
-                    ((device == null)?"??":device.getVirtIp()) + ")\n";
+                    ((device == null) ? "??" : device.getVirtIp()) + ")\n";
             peersStr.append(devstr);
             connected.put(deviceName, device.getVirtIp());
         }
@@ -89,13 +108,14 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
     @Override
     public void onPeersAvailable(SimWifiP2pDeviceList simWifiP2pDeviceList) {
         nearbyAvailable.clear();
-        for(SimWifiP2pDevice device : simWifiP2pDeviceList.getDeviceList()){
+        for (SimWifiP2pDevice device : simWifiP2pDeviceList.getDeviceList()) {
             nearbyAvailable.add(device.getVirtIp());
         }
     }
 
     public class OutgoingCommTask extends AsyncTask<String, Void, String> {
         SimWifiP2pSocket mCliSocket;
+
         @Override
         protected void onPreExecute() {
 
@@ -125,7 +145,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         }
     }
 
-    public void sendMessage(String user, String message){
+    public void sendMessage(String user, String message) {
         if (mBound) {
             Message textMsg = new Message(message);
             new SendCommTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user, textMsg.toJSON());
@@ -138,11 +158,11 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         @Override
         protected Void doInBackground(String... msg) {
             try {
-                Log.d("TEST", "Sending message " + msg[0] + msg[1] );
+                Log.d("TEST", "Sending message " + msg[0] + msg[1]);
                 mCliSocket = new SimWifiP2pSocket(msg[0], 10001);
-                if(mCliSocket == null){
+                if (mCliSocket == null) {
                     Log.d("TAG", "no such user");
-                }else {
+                } else {
                     mCliSocket.getOutputStream().write((msg[1] + "\n").getBytes());
                     BufferedReader sockIn = new BufferedReader(
                             new InputStreamReader(mCliSocket.getInputStream()));
@@ -167,7 +187,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                if(mSrvSocket == null)
+                if (mSrvSocket == null)
                     mSrvSocket = new SimWifiP2pSocketServer(10001);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -198,61 +218,61 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
 
         @Override
         protected void onProgressUpdate(String... values) {
-            Log.d("VALUES", ""+values.length);
-            for(int i = 0; i < values.length; i++){
+            Log.d("VALUES", "" + values.length);
+            for (int i = 0; i < values.length; i++) {
                 Log.d("VALUES", values[i]);
             }
             try {
                 JSONObject jsonObject = new JSONObject(values[0]);
-                if(jsonObject.getString("type").equals(Message.TYPE_POINTS)){
+                if (jsonObject.getString("type").equals(Message.TYPE_POINTS)) {
                     Log.d("RCV POINTS", "received POINTS");
                     addPoints(Integer.parseInt(jsonObject.getString("content")));
-                }else if (jsonObject.getString("type").equals(Message.TYPE_MSG)){
+                } else if (jsonObject.getString("type").equals(Message.TYPE_MSG)) {
                     Log.d("RCV MSG", "received a text message");
-                    messageReceived("",jsonObject.getString("content"));
+                    messageReceived("", jsonObject.getString("content"));
                 }
-            }catch(JSONException e){
+            } catch (JSONException e) {
                 Log.d("Error jsonMessage: ", e.getMessage());
             }
         }
     }
 
-    private void addPoints(int pointsToadd){
-        ((App)appContext).getUser().points += pointsToadd;
-        if(currActivity instanceof MainActivity)
-            ((MainActivity)currActivity).pointsLbl.setText(Integer.toString(((App)appContext).getUser().points));
+    private void addPoints(int pointsToadd) {
+        ((App) appContext).getUser().points += pointsToadd;
+        if (currActivity instanceof MainActivity)
+            ((MainActivity) currActivity).pointsLbl.setText(Integer.toString(((App) appContext).getUser().points));
     }
 
-    private void messageReceived(String sender, String message){
+    private void messageReceived(String sender, String message) {
         //se estiver na actividade das mensagens, adicionar ao ecra
-        if(currActivity instanceof SendMessage) {
-            String currhistory = ((SendMessage)currActivity).history.getText().toString() + '\n' + "Me: " + message ;
-            Log.d("Text",currhistory);
-            ((SendMessage)currActivity).history.setText(currhistory);
+        if (currActivity instanceof SendMessage) {
+            String currhistory = ((SendMessage) currActivity).history.getText().toString() + '\n' + "Me: " + message;
+            Log.d("Text", currhistory);
+            ((SendMessage) currActivity).history.setText(currhistory);
         }
         saveFile(sender, message);
     }
 
-    public void saveFile(String sender, String message){
+    public void saveFile(String sender, String message) {
         Log.d("SAVE ON FILE", "");
         msgHistory.writeFile(sender, message);
     }
 
-    public String readFile(String sender){
+    public String readFile(String sender) {
         return msgHistory.readFile(sender);
     }
 
-    public void sendPoints(String user,int points){
+    public void sendPoints(String user, int points) {
         Message pointsMsg = new Message(points);
         new SendCommTask().executeOnExecutor(
                 AsyncTask.THREAD_POOL_EXECUTOR, user, pointsMsg.toJSON()
-                );
+        );
     }
 
     @Override
-    public void wifiEnabled(boolean state){
+    public void wifiEnabled(boolean state) {
         String statePrint;
-        if(state)
+        if (state)
             statePrint = "WiFi Direct enabled";
         else
             statePrint = "WiFi Direct disabled";
@@ -262,29 +282,29 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
     }
 
     @Override
-    public void peersChanged(){
+    public void peersChanged() {
         Toast.makeText(currActivity, "Peer list changed",
                 Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void membChanged(){
+    public void membChanged() {
         Toast.makeText(currActivity, "Network membership changed",
                 Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void ownerChanged(){
+    public void ownerChanged() {
         Toast.makeText(currActivity, "Group ownership changed",
                 Toast.LENGTH_SHORT).show();
     }
 
-    private Context getContext(){
+    private Context getContext() {
         return appContext;
     }
 
-    public void wifiOn(){
-        if(mBound)
+    public void wifiOn() {
+        if (mBound)
             return;
         Intent intent = new Intent(getContext(), SimWifiP2pService.class);
         getContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
@@ -294,11 +314,11 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
                 AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void wifiOff(){
-       if(mBound){
-           getContext().unbindService(mConnection);
-           mBound = false;
-       }
+    public void wifiOff() {
+        if (mBound) {
+            getContext().unbindService(mConnection);
+            mBound = false;
+        }
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -318,3 +338,4 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
             mBound = false;
         }
     };
+}
