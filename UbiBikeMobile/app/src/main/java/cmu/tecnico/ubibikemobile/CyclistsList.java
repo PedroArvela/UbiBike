@@ -51,7 +51,7 @@ public class CyclistsList extends AppCompatActivity {
 
         cyclistsNames = new ArrayList<String>();
         cyclistsNames = wifiHandler.nearbyAvailable;
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, R.id.list_item, cyclistsNames);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, cyclistsNames);
 
         listView = (ListView) findViewById(R.id.cyclists);
 
