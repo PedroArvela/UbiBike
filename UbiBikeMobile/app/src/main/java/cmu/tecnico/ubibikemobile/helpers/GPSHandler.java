@@ -125,6 +125,8 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                 //apanhou bicicleta
                 if(!pickedBycicle && hasBeaconNearby){
                     //avisar servidor
+                    Toast.makeText(appContext, "grabbed a bike",
+                            Toast.LENGTH_SHORT).show();
                     Log.d("GPS","grabbed a bike");
                     pickedBycicle = true;
                 }
@@ -132,7 +134,9 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                 //largou bicicleta
                 if(pickedBycicle && !hasBeaconNearby) {
                     //avisar servidor
-                    Log.d("GPS","dropped a bike");
+                    Log.d("GPS","grabbed a bike");
+                    Toast.makeText(appContext, "dropped a bike",
+                            Toast.LENGTH_SHORT).show();
                     pickedBycicle = false;
                 }
             }
@@ -140,7 +144,8 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
             //está a andar de bicicleta
             if(pickedBycicle && hasBeaconNearby){
                 trajectory.add(location); //guardar trajectoria
-                Log.d("GPS","biking");
+                Toast.makeText(appContext, "biking",
+                        Toast.LENGTH_SHORT).show();
             }
 
             if(pickedBycicle && !hasBeaconNearby){
