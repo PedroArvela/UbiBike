@@ -41,7 +41,7 @@ public class SendPoints extends AppCompatActivity {
         app.getWifiHandler().currActivity = this;
         this.wifiHandler = app.getWifiHandler();
 
-        button = (Button) findViewById(R.id.btn_BookStations);
+        button = (Button) findViewById(R.id.btn_ReserveStations);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -63,12 +63,12 @@
         android:indeterminate="true" />
 
     <Button
-        android:id="@+id/btn_BookStations"
+        android:id="@+id/btn_ReserveStations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_CyclistsNearby"
-        android:text="@string/button_book_stations"
-        android:onClick="btn_BookStations_onClick" />
+        android:text="@string/button_reserve_stations"
+        android:onClick="btn_ReserveStations_onClick" />
 
     <Button
         android:id="@+id/btn_CyclistsNearby"

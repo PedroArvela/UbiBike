@@ -32,7 +32,7 @@ public class CyclistInteractionMenu extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), cyclistName, Toast.LENGTH_SHORT);
         toast.show();
 
-        button = (Button) findViewById(R.id.btn_BookStations);
+        button = (Button) findViewById(R.id.btn_ReserveStations);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myIntent = new Intent(CyclistInteractionMenu.this, SendPoints.class);

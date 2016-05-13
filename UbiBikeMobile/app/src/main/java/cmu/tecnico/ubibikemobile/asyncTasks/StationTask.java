@@ -41,13 +41,13 @@ public class StationTask extends AsyncTask<String, Boolean, Station> {
             URLHelper url = new URLHelper(resources);
 
             //TODO Fetch URL de estações por stationName
-            Pair<Integer, List<String>> response = url.fetchUrl("station");
+            Pair<Integer, List<String>> response = url.fetchUrl("station/" + stationName);
 
             responseCode = response.first;
 
             if (response.first == 200) {
                 //TODO Assume-se que o servidor retorna duas linhas. 1a com as coordenadas da estação num par lat+long (eg. "38.123,-9.123")
-                // E a 2a linha contém um inteiro com o número de bicicletas existentes na estação
+                // E a 2a linha contém um inteiro com o número de bicicletas livres na estação
                 if(response.second.size() != 2)
                     return station;
 
@@ -56,9 +56,9 @@ public class StationTask extends AsyncTask<String, Boolean, Station> {
                 double lng = Double.parseDouble(latLng[1]);
                 LatLng coordinates =  new LatLng(lat,lng);
 
-                int totalBikes = Integer.parseInt(response.second.get(1));
+                int freeBikes = Integer.parseInt(response.second.get(1));
 
-                station = new Station(stationName, totalBikes, coordinates);
+                station = new Station(stationName, freeBikes, coordinates);
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();

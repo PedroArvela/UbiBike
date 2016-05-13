@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="cmu.tecnico.ubibikemobile.BookBycicle">
+    tools:context=".ReserveBikeActivity">
 
     <include layout="@layout/actionbar" />
 
-    <include layout="@layout/content_book_bycicle" />
+    <include layout="@layout/content_reserve_bicycle" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -39,8 +39,8 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BookBycicle"
-            android:label="@string/title_activity_book_bycicle"
+            android:name=".ReserveBikeActivity"
+            android:label="@string/title_activity_reseve_bycicle"
             android:parentActivityName=".StationsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

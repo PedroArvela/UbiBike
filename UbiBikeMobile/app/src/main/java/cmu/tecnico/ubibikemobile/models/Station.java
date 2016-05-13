@@ -6,54 +6,54 @@ public class Station {
 
     private final String name;
     private final LatLng coordinates;
-    private int totalBikes;
-    private int bookedBikes;
+    private int freeBikes;
+    private int reservedBikes;
 
-    public Station(String name, int totalBikes, LatLng coordinates) {
+    public Station(String name, int freeBikes, LatLng coordinates) {
         this.name = name;
-        this.totalBikes = totalBikes;
+        this.freeBikes = freeBikes;
         this.coordinates = coordinates;
-        this.bookedBikes = 0;
+        this.reservedBikes = 0;
     }
 
     public String getName() { return name; }
     public LatLng getCoordinates() { return coordinates; }
-    public int getBookedBikes() { return bookedBikes; }
-    public int getTotalBikes() { return totalBikes; }
+    public int getReservedBikesBikes() { return reservedBikes; }
+    public int getFreeBikes() { return freeBikes; }
 
-    public boolean bookBike() {
+    public boolean reserveBike() {
         //TODO comunicar alterações com o server
-        if(bookedBikes == totalBikes)
+        if(freeBikes == 0)
             return false;
 
-        bookedBikes++;
+        reservedBikes++;
         return true;
     }
 
-    public boolean unbookBike() {
+    public boolean unreserveBike() {
         //TODO comunicar alterações com o server
-        if(bookedBikes == 0)
+        if(reservedBikes == 0)
             return false;
 
-        bookedBikes--;
+        reservedBikes--;
         return true;
     }
 
-    public boolean pickupBike(boolean wasBooked) {
+    public boolean pickupBike(boolean wasReserved) {
         //TODO comunicar alterações com o server
-        if(totalBikes == 0 || totalBikes == bookedBikes)
+        if(freeBikes == 0)
             return false;
 
-        if(wasBooked)
-            bookedBikes--;
+        if(wasReserved)
+            reservedBikes--;
 
-        totalBikes--;
+        freeBikes--;
         return true;
     }
 
     public void dropoffBike() {
         //TODO comunicar alterações com o server
-        totalBikes++;
+        freeBikes++;
     }
 
 }

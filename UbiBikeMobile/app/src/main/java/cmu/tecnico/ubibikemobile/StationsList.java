@@ -42,7 +42,7 @@ public class StationsList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(StationsList.this, BookBycicle.class);
+                Intent intent = new Intent(StationsList.this, ReserveBikeActivity.class);
                 String selected = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
                 intent.putExtra(STATION_NAME, selected);
                 startActivity(intent);

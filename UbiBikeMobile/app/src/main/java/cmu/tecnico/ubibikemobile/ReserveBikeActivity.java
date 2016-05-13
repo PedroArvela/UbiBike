@@ -2,17 +2,23 @@ package cmu.tecnico.ubibikemobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class BookBycicle extends AppCompatActivity {
+import cmu.tecnico.ubibikemobile.asyncTasks.StationTask;
+import cmu.tecnico.ubibikemobile.models.Station;
+
+public class ReserveBikeActivity extends AppCompatActivity {
 
     String stationName;
-    int availableBikes;
+    Station station;
     TextView textViewAvailableBikes;
     TextView textViewNoBikesAvailable;
     Button btnBookBike;
@@ -20,7 +26,7 @@ public class BookBycicle extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_bycicle);
+        setContentView(R.layout.activity_reserve_bicycle);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -34,17 +40,27 @@ public class BookBycicle extends AppCompatActivity {
 
         textViewAvailableBikes = (TextView) findViewById(R.id.lbl_freeBikes);
         textViewNoBikesAvailable = (TextView) findViewById(R.id.lbl_noBikeAvailable);
-        btnBookBike = (Button) findViewById(R.id.btn_bookBike);
+        btnBookBike = (Button) findViewById(R.id.btn_reserveBike);
 
-        GetAvailableBikes(stationName);
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.arg1 != 200) {
+                    Toast.makeText(getBaseContext(), "Failed to fetch user info", Toast.LENGTH_SHORT);
+                } else {
+                    station = ((Station) msg.obj);
+                    getFreeBikes();
+                }
+            }
+        };
+        new StationTask((App) getApplication(), handler, getResources()).execute(stationName);
 
     }
 
-    private void GetAvailableBikes(String stationName) {
-        //Comunicate with server
-        availableBikes = 4;
+    private void getFreeBikes() {
+        int freeBikes = station.getFreeBikes();
 
-        if (availableBikes == 0) {
+        if (freeBikes == 0) {
             textViewNoBikesAvailable.setVisibility(View.VISIBLE);
             btnBookBike.setEnabled(false);
         } else {
@@ -52,6 +68,6 @@ public class BookBycicle extends AppCompatActivity {
             btnBookBike.setEnabled(true);
         }
 
-        textViewAvailableBikes.setText("Number of Available Bikes: " + availableBikes);
+        textViewAvailableBikes.setText("Number of Available Bikes: " + freeBikes);
     }
 }

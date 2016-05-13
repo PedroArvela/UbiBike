@@ -9,16 +9,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cmu.tecnico.ubibikemobile.BookBycicle"
-    tools:showIn="@layout/activity_book_bycicle">
+    tools:context=".ReserveBikeActivity"
+    tools:showIn="@layout/activity_reserve_bicycle">
 
     <Button
-        android:id="@+id/btn_bookBike"
+        android:id="@+id/btn_reserveBike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Book Bike" />
+        android:text="Reserve Bike" />
 
     <TextView
         android:id="@+id/lbl_noBikeAvailable"

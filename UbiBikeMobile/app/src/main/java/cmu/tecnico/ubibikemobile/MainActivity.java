@@ -31,9 +31,6 @@ import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 public class MainActivity extends AppCompatActivity {
 
     Intent myIntent;
-    Button button;
-    Button button2;
-    Button btnUserInfo;
     ListView listView;
     public TextView pointsLbl;
     User user;
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         pointsLbl.setText(Integer.toString(user.points));
     }
 
-    public void btn_BookStations_onClick(View v) {
+    public void btn_ReserveStations_onClick(View v) {
         myIntent = new Intent(MainActivity.this, StationsList.class);
         MainActivity.this.startActivity(myIntent);
     }

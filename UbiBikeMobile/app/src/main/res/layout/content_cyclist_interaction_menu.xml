@@ -13,7 +13,7 @@
     tools:showIn="@layout/activity_cyclist_interaction_menu">
 
     <Button
-        android:id="@+id/btn_BookStations"
+        android:id="@+id/btn_ReserveStations"
         android:text="@string/button_send_points"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -23,6 +23,6 @@
         android:text="@string/button_send_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_BookStations" />
+        android:layout_below="@+id/btn_ReserveStations" />
 
 </RelativeLayout>
