@@ -119,8 +119,9 @@ public class Server {
 		List<String> result = new ArrayList<String>();
 
 		if (path.size() == 1) {
-			for (String station : manager.stations.keySet()) {
-				result.add(station);
+			for (Station station : manager.stations.values()) {
+				result.add(station.name + ";" + station.coordinates + ";" 
+							+ new Integer(station.freeBikes).toString() + ";" + new Integer(station.reservedBikes).toString());
 			}
 		} else if (path.size() == 2 && manager.stations.containsKey(path.get(1))) {
 			Station station = manager.stations.get(path.get(1));

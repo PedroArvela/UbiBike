@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmu.tecnico.ubibikemobile.asyncTasks.StationListTask;
+import cmu.tecnico.ubibikemobile.models.Station;
 
 public class StationsList extends AppCompatActivity {
     ArrayList<String> stationNames;
@@ -55,8 +56,8 @@ public class StationsList extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 if(msg.what == App.MESSAGE_STATIONS && msg.arg1 == 200) {
-                    for (String station : (List<String>) msg.obj) {
-                        adapter.add(station);
+                    for (Station station : (List<Station>) msg.obj) {
+                        adapter.add(station.getName());
                     }
                 }
             }

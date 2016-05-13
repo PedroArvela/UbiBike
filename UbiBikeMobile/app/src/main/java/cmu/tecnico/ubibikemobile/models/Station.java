@@ -16,6 +16,11 @@ public class Station {
         this.reservedBikes = 0;
     }
 
+    public Station(String name, int freeBikes, LatLng coordinates, int reservedBikes) {
+        this(name, freeBikes, coordinates);
+        this.reservedBikes = reservedBikes;
+    }
+
     public String getName() { return name; }
     public LatLng getCoordinates() { return coordinates; }
     public int getReservedBikesBikes() { return reservedBikes; }

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -48,7 +49,7 @@ public class StationTask extends AsyncTask<String, Boolean, Station> {
             if (response.first == 200) {
                 //TODO Assume-se que o servidor retorna duas linhas. 1a com as coordenadas da estação num par lat+long (eg. "38.123,-9.123")
                 // E a 2a linha contém um inteiro com o número de bicicletas livres na estação
-                if(response.second.size() != 2)
+                if(response.second.size() != 3)
                     return station;
 
                 String[] latLng = response.second.get(0).split(",");
@@ -57,10 +58,15 @@ public class StationTask extends AsyncTask<String, Boolean, Station> {
                 LatLng coordinates =  new LatLng(lat,lng);
 
                 int freeBikes = Integer.parseInt(response.second.get(1));
+                int reservedBikes = Integer.parseInt(response.second.get(2));
 
-                station = new Station(stationName, freeBikes, coordinates);
+                station = new Station(stationName, freeBikes, coordinates, reservedBikes);
+            }
+            else {
+                Log.e("StationTask", "Server returned code "+responseCode);
             }
         } catch (MalformedURLException e) {
+            Log.e("StationTask", e.getMessage());
             e.printStackTrace();
         } finally {
             return station;
