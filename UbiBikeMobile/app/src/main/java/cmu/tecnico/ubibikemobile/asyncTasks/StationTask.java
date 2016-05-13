@@ -47,8 +47,6 @@ public class StationTask extends AsyncTask<String, Boolean, Station> {
             responseCode = response.first;
 
             if (response.first == 200) {
-                //TODO Assume-se que o servidor retorna duas linhas. 1a com as coordenadas da estação num par lat+long (eg. "38.123,-9.123")
-                // E a 2a linha contém um inteiro com o número de bicicletas livres na estação
                 if(response.second.size() != 3)
                     return station;
 

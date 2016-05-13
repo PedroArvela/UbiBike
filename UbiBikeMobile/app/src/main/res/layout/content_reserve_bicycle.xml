@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Reserve Bike" />
+        android:text="Reserve Bike"
+        android:onClick="btn_reserveBike_onClick" />
 
     <TextView
         android:id="@+id/lbl_noBikeAvailable"
@@ -49,4 +50,24 @@
         android:id="@+id/lbl_freeBikes"
         android:layout_alignTop="@+id/lbl_noBikeAvailable"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel Reservation"
+        android:id="@+id/btn_cancelReservation"
+        android:layout_below="@+id/btn_reserveBike"
+        android:layout_centerHorizontal="true"
+        android:onClick="btn_cancelBikeReservation_onClick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Bike Already Reserved!"
+        android:id="@+id/lbl_bike_already_reserved"
+        android:layout_below="@+id/lbl_noBikeAvailable"
+        android:layout_toStartOf="@+id/btn_reserveBike"
+        android:layout_alignEnd="@+id/btn_reserveBike"
+        android:textColor="@android:color/holo_green_dark" />
 </RelativeLayout>

@@ -121,7 +121,7 @@ public class Server {
 		if (path.size() == 1) {
 			for (Station station : manager.stations.values()) {
 				result.add(station.name + ";" + station.coordinates + ";" 
-							+ new Integer(station.freeBikes).toString() + ";" + new Integer(station.reservedBikes).toString());
+						+ new Integer(station.freeBikes).toString() + ";" + new Integer(station.reservedBikes).toString());
 			}
 		} else if (path.size() == 2 && manager.stations.containsKey(path.get(1))) {
 			Station station = manager.stations.get(path.get(1));
@@ -129,8 +129,37 @@ public class Server {
 			result.add(new Integer(station.freeBikes).toString());
 			result.add(new Integer(station.reservedBikes).toString());
 		} else {
-			code = 404;
-			result.add("Station not found");
+			if (path.size() == 3 && manager.stations.containsKey(path.get(1))) {
+				Station station = manager.stations.get(path.get(1));
+				String action = path.get(2);
+				
+				if(action.equals("reserve")) {
+					boolean actionResult = false;
+					actionResult = station.reserveBike();
+					
+					if(actionResult)
+						result.add("true");
+					else
+						result.add("false");
+				}
+				else {
+					if(action.equals("cancel")) {
+						boolean actionResult = false;
+						actionResult = station.cancelBikeReservation();
+
+						if(actionResult)
+							result.add("true");
+						else
+							result.add("false");
+					} else {
+						code = 404;
+						result.add("Only 'reserve' and 'cancel' actions are available. Unknown '"+ action + "' action.");
+					}
+				}
+			} else {
+				code = 404;
+				result.add("Station not found");
+			}
 		}
 
 		return new ImmutablePair<Integer, List<String>>(code, result);

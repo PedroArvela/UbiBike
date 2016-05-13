@@ -27,37 +27,33 @@ public class Station {
     public int getFreeBikes() { return freeBikes; }
 
     public boolean reserveBike() {
-        //TODO comunicar alterações com o server
         if(freeBikes == 0)
             return false;
 
         reservedBikes++;
+        freeBikes--;
         return true;
     }
 
-    public boolean unreserveBike() {
-        //TODO comunicar alterações com o server
+    public boolean cancelBikeReservation() {
         if(reservedBikes == 0)
             return false;
 
         reservedBikes--;
+        freeBikes++;
         return true;
     }
 
     public boolean pickupBike(boolean wasReserved) {
-        //TODO comunicar alterações com o server
         if(freeBikes == 0)
             return false;
 
-        if(wasReserved)
-            reservedBikes--;
-
+        reservedBikes--;
         freeBikes--;
         return true;
     }
 
     public void dropoffBike() {
-        //TODO comunicar alterações com o server
         freeBikes++;
     }
 

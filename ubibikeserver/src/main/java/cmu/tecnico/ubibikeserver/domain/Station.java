@@ -12,4 +12,36 @@ public class Station {
 		this.freeBikes = 10;
 		this.reservedBikes = 0;
 	}
+	
+	public boolean reserveBike() {
+        if(freeBikes == 0)
+            return false;
+
+        reservedBikes++;
+        freeBikes--;
+        return true;
+    }
+
+    public boolean cancelBikeReservation() {
+        if(reservedBikes == 0)
+            return false;
+
+        reservedBikes--;
+        freeBikes++;
+        return true;
+    }
+
+    public boolean pickupBike() {
+        if(freeBikes == 0)
+            return false;
+
+        reservedBikes--;
+        freeBikes--;
+        
+        return true;
+    }
+
+    public void dropoffBike() {
+        freeBikes++;
+    }
 }
