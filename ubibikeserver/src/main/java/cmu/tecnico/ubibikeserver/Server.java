@@ -148,6 +148,7 @@ public class Server {
 					break;
 					
 				case "dropoff":
+					//TODO Enviar trajectória - saber que user fez o dropoff e guardar trajectória
 					station.dropoffBike();
 					actionResult = true;
 					break;
