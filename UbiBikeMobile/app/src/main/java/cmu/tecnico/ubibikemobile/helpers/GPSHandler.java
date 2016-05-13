@@ -32,7 +32,6 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
 //PeerListListener
 
     final static String BEACON_NAME = "beacon";
-    Activity currActivity;
     Context appContext;
     ArrayList<LatLng> trajectory;
     ArrayList<LatLng> bikeStations;
@@ -40,24 +39,18 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
     Boolean currHasBike;
     Boolean prevHasBike;
 
-    public GPSHandler(Activity currActivity, Context appContext){
-        this.currActivity = currActivity;
+    public GPSHandler(Context appContext){
         this.appContext = appContext;
         trajectory = new ArrayList<LatLng>();
         currHasBike = false;
         prevHasBike = false;
 
-        if ( ContextCompat.checkSelfPermission(appContext, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-/*
-            ActivityCompat.requestPermissions(currActivity, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    LocationService.MY_PERMISSION_ACCESS_COURSE_LOCATION );
-                    */
-            ActivityCompat.requestPermissions(currActivity, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    2 );
-        }
-
         LocationManager lManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
-        lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, this);
+        try {
+            lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, this);
+        }catch(SecurityException e){
+            Log.e("SECURITY EXCEPTION", e.getMessage());
+        }
     }
 
     public String getTrajectoryJson(){

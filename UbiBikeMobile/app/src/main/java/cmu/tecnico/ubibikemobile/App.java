@@ -2,6 +2,7 @@ package cmu.tecnico.ubibikemobile;
 
 import android.app.Application;
 
+import cmu.tecnico.ubibikemobile.helpers.GPSHandler;
 import cmu.tecnico.ubibikemobile.models.User;
 import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
 
@@ -15,6 +16,16 @@ public class App extends Application {
     private String username;
     private User user;
     private ConcreteWifiHandler wifiHandler;
+
+    public GPSHandler getGpsHandler() {
+        return gpsHandler;
+    }
+
+    public void setGpsHandler(GPSHandler gpsHandler) {
+        this.gpsHandler = gpsHandler;
+    }
+
+    private GPSHandler gpsHandler;
 
     public String getUsername() {
         return username;
