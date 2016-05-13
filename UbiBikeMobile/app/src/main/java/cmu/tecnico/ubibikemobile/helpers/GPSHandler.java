@@ -52,18 +52,22 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
         this.bikeStations = bikeStations;
     }
 
-    Boolean currHasBike;
-    Boolean prevHasBike;
-    Boolean onStation;
+    private Boolean hasBeaconNearby;
+    private Boolean isInStation;
+    private Boolean wasInStation;
+    private Boolean pickedBycicle;
 
     public GPSHandler(Context appContext, SimWifiP2pBroadcastReceiver mReceiver){
         this.appContext = appContext;
         trajectory = new ArrayList<Location>();
         bikeStations = new ArrayList<Station>();
         bikeStationLocations = new ArrayList<Location>();
-        currHasBike = false;
-        prevHasBike = false;
-        onStation = false;
+
+        hasBeaconNearby = false;
+        isInStation = false;
+        wasInStation = false;
+        pickedBycicle = false;
+
         LocationManager lManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
         try {
             lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, this);
@@ -107,49 +111,57 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
     public void onLocationChanged(Location location) {//nova posicao
         Log.d("GPS", "Location Changed " + location.toString());
 
-        Boolean isNearStation = false;
-        Log.d("GPS", "Stations " + bikeStations.size());
+        wasInStation = isInStation;
+        isInStation = false;
         for(int i = 0; i < bikeStations.size(); i++){ //detectar se estiver perto de uma das estações
             float[] results = new float[1];
             if(location.distanceTo(bikeStationLocations.get(i)) < DISTANCE_TO_LEAVE_STATION){
-                Log.d("GPS", "Its near a station");
-                isNearStation = true;
+                isInStation = true;
             }
         }
-        onStation = isNearStation;
-        if(isNearStation) { //se estiver perto de uma das estações ver se tem beacons por perto e actualizar variaveis
-            ((App)appContext).getWifiHandler().requestPeers(this); //requestPeers pede um PeerListListener e o listener dessa classe recebe o resultado
-        }else{
-            Log.d("GPS","currHasBike: "+currHasBike+" ;prevHasBike: "+prevHasBike);
-            //apanhou bicicleta
-            if(currHasBike && !prevHasBike){
-                //avisar servidor
-                Log.d("GPS","grabbed a bike");
-                prevHasBike = true;
-            }
-            //largou bicicleta
-            if(!currHasBike && prevHasBike) {
-                //avisar servidor
-                Log.d("GPS","dropped a bike");
+        if(!isInStation) { //se nao estiver na estação
+            if(wasInStation){ //mas acabou de sair da estação
+
+                //apanhou bicicleta
+                if(!pickedBycicle && hasBeaconNearby){
+                    //avisar servidor
+                    Log.d("GPS","grabbed a bike");
+                    pickedBycicle = true;
+                }
+
+                //largou bicicleta
+                if(pickedBycicle && !hasBeaconNearby) {
+                    //avisar servidor
+                    Log.d("GPS","dropped a bike");
+                    pickedBycicle = false;
+                }
             }
 
             //está a andar de bicicleta
-            if(currHasBike && prevHasBike){
+            if(pickedBycicle && hasBeaconNearby){
                 trajectory.add(location); //guardar trajectoria
                 Log.d("GPS","biking");
             }
+
+            if(pickedBycicle && !hasBeaconNearby){
+                Log.d("GPS","walking not on bike");
+            }
+
         }
+        Log.d("GPS", "Its near a station: "+isInStation);
+        Log.d("GPS", "Was near a station: "+wasInStation);
+        Log.d("GPS", "Picked bike: "+pickedBycicle);
+        Log.d("GPS", "Has beacon Nearby: "+hasBeaconNearby);
+
     }
 
     @Override
     public void onPeersAvailable(SimWifiP2pDeviceList simWifiP2pDeviceList) { //listener de requestPeers
-        prevHasBike = currHasBike;
-        currHasBike = false;
-
+        hasBeaconNearby = false;
         for (SimWifiP2pDevice device : simWifiP2pDeviceList.getDeviceList()) {
             if(device.deviceName.contains(BEACON_NAME)) { //está perto de um beacon
                 Log.d("GPS","Beacon close by: "+device.deviceName);
-                currHasBike = true;
+                hasBeaconNearby = true;
             }
         }
 
