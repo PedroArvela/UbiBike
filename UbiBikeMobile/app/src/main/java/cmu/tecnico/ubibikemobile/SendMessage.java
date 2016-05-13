@@ -47,7 +47,7 @@ public class SendMessage extends AppCompatActivity {
         history = (TextView) findViewById(R.id.chat_history);
         newMsg = (EditText) findViewById(R.id.new_sms);
         button = (Button) findViewById(R.id.SubmitMsg);
-        history.setText( wifiHandler.readFile(cyclistName));
+        //history.setText( wifiHandler.readFile(cyclistName));
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -55,7 +55,7 @@ public class SendMessage extends AppCompatActivity {
                 String newContent = history.getText().toString() + '\n' + "Me: " +  writtenMsg;
                 history.setText(newContent);
                 wifiHandler.sendMessage(cyclistName, writtenMsg);
-                wifiHandler.saveFile(cyclistName, newContent);
+                //wifiHandler.saveFile(cyclistName, newContent);
                 newMsg.setText("");
                 chatScroll.fullScroll(ScrollView.FOCUS_DOWN);
             }
@@ -68,7 +68,7 @@ public class SendMessage extends AppCompatActivity {
     public void onResume() {
         super.onResume();  // Always call the superclass method first
 
-        history.setText(wifiHandler.readFile(cyclistName));
+        //history.setText(wifiHandler.readFile(cyclistName));
     }
 
 }
