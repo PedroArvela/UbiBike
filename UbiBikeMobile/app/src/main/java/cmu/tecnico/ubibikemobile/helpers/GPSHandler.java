@@ -25,6 +25,7 @@ import cmu.tecnico.ubibikemobile.App;
 import cmu.tecnico.ubibikemobile.asyncTasks.RegisterTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.StationListTask;
 import cmu.tecnico.ubibikemobile.models.Station;
+import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
 import cmu.tecnico.wifiDirect.WifiHandler;
 import pt.inesc.termite.wifidirect.SimWifiP2pDevice;
 import pt.inesc.termite.wifidirect.SimWifiP2pDeviceList;
@@ -53,14 +54,16 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
 
     Boolean currHasBike;
     Boolean prevHasBike;
+    Boolean onStation;
 
-    public GPSHandler(Context appContext){
+    public GPSHandler(Context appContext, SimWifiP2pBroadcastReceiver mReceiver){
         this.appContext = appContext;
         trajectory = new ArrayList<Location>();
         bikeStations = new ArrayList<Station>();
         bikeStationLocations = new ArrayList<Location>();
         currHasBike = false;
         prevHasBike = false;
+        onStation = false;
         LocationManager lManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
         try {
             lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, this);
@@ -68,6 +71,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
             Log.e("SECURITY EXCEPTION", e.getMessage());
         }
 
+        mReceiver.setGpshandler(this);
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -94,6 +98,11 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
         return jsonArray.toString();
     }
 
+    public void updateNearbyBeaconList(){
+        Log.d("GPS", "Update nearby beacon status");
+        ((App)appContext).getWifiHandler().requestPeers(this);
+    }
+
     @Override
     public void onLocationChanged(Location location) {//nova posicao
         Log.d("GPS", "Location Changed " + location.toString());
@@ -107,7 +116,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                 isNearStation = true;
             }
         }
-
+        onStation = isNearStation;
         if(isNearStation) { //se estiver perto de uma das estações ver se tem beacons por perto e actualizar variaveis
             ((App)appContext).getWifiHandler().requestPeers(this); //requestPeers pede um PeerListListener e o listener dessa classe recebe o resultado
         }else{
@@ -121,7 +130,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
             //largou bicicleta
             if(!currHasBike && prevHasBike) {
                 //avisar servidor
-                Log.d("GPS","grabbed a bike");
+                Log.d("GPS","dropped a bike");
             }
 
             //está a andar de bicicleta
@@ -130,7 +139,6 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                 Log.d("GPS","biking");
             }
         }
-
     }
 
     @Override

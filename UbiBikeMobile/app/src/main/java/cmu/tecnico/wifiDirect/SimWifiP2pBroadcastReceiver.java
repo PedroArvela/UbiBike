@@ -12,9 +12,23 @@ public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
 
     private WifiHandler handler;
 
+    public void setGpshandler(GPSHandler gpshandler) {
+        this.gpshandler = gpshandler;
+    }
+
+    public void setHandler(WifiHandler handler) {
+        this.handler = handler;
+    }
+
+    private GPSHandler gpshandler;
+
     public SimWifiP2pBroadcastReceiver(WifiHandler handler) {
         super();
         this.handler = handler;
+    }
+
+    public SimWifiP2pBroadcastReceiver() {
+        super();
     }
 
     @Override
@@ -39,7 +53,7 @@ public class SimWifiP2pBroadcastReceiver extends BroadcastReceiver {
             // asynchronous call and the calling activity is notified with a
             // callback on PeerListListener.onPeersAvailable()
             handler.peersChanged();
-
+            gpshandler.updateNearbyBeaconList();
 
         } else if (SimWifiP2pBroadcast.WIFI_P2P_NETWORK_MEMBERSHIP_CHANGED_ACTION.equals(action)) {
 

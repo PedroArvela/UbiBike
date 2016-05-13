@@ -5,6 +5,7 @@ import android.app.Application;
 import cmu.tecnico.ubibikemobile.helpers.GPSHandler;
 import cmu.tecnico.ubibikemobile.models.User;
 import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
+import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
 
 public class App extends Application {
     public final static int MESSAGE_USER = 0;
@@ -16,7 +17,16 @@ public class App extends Application {
     private String username;
     private User user;
     private ConcreteWifiHandler wifiHandler;
+    private GPSHandler gpsHandler;
+    private SimWifiP2pBroadcastReceiver rcv;
 
+    public SimWifiP2pBroadcastReceiver getRcv() {
+        return rcv;
+    }
+
+    public void setRcv(SimWifiP2pBroadcastReceiver rcv) {
+        this.rcv = rcv;
+    }
     public GPSHandler getGpsHandler() {
         return gpsHandler;
     }
@@ -24,8 +34,6 @@ public class App extends Application {
     public void setGpsHandler(GPSHandler gpsHandler) {
         this.gpsHandler = gpsHandler;
     }
-
-    private GPSHandler gpsHandler;
 
     public String getUsername() {
         return username;
