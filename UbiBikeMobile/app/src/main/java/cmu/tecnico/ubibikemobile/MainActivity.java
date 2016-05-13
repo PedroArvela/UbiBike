@@ -27,6 +27,7 @@ import cmu.tecnico.ubibikemobile.helpers.GPSHandler;
 import cmu.tecnico.ubibikemobile.models.Trajectory;
 import cmu.tecnico.ubibikemobile.models.User;
 import cmu.tecnico.ubibikemobile.helpers.ConcreteWifiHandler;
+import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,16 +54,19 @@ public class MainActivity extends AppCompatActivity {
 
         App app = (App) getApplicationContext();
 
+        if(app.getRcv()==null)
+            app.setRcv(new SimWifiP2pBroadcastReceiver());
+
         if(app.getWifiHandler()==null)
-            app.setWifiHandler(new ConcreteWifiHandler(getApplicationContext()));
+            app.setWifiHandler(new ConcreteWifiHandler(getApplicationContext(), app.getRcv()));
 
         if(app.getGpsHandler()== null) {
             if ( ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
                 ActivityCompat.requestPermissions(this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                         123 ); //random number
-                app.setGpsHandler(new GPSHandler(getApplicationContext()));
+                app.setGpsHandler(new GPSHandler(getApplicationContext(),app.getRcv()));
             }else
-                app.setGpsHandler(new GPSHandler(getApplicationContext()));
+                app.setGpsHandler(new GPSHandler(getApplicationContext(),app.getRcv()));
         }
         app.getWifiHandler().currActivity = this;
         app.getWifiHandler().wifiOn();

@@ -58,7 +58,7 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
     public ArrayList<String> nearbyAvailable;
     public HashMap<String, String> connected;
 
-    public ConcreteWifiHandler(Context appContext) {
+    public ConcreteWifiHandler(Context appContext, SimWifiP2pBroadcastReceiver mReceiver) {
         this.appContext = appContext;
         nearbyAvailable = new ArrayList<String>();
         connected = new HashMap<String, String>();
@@ -72,7 +72,8 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         filter.addAction(SimWifiP2pBroadcast.WIFI_P2P_PEERS_CHANGED_ACTION);
         filter.addAction(SimWifiP2pBroadcast.WIFI_P2P_NETWORK_MEMBERSHIP_CHANGED_ACTION);
         filter.addAction(SimWifiP2pBroadcast.WIFI_P2P_GROUP_OWNERSHIP_CHANGED_ACTION);
-        mReceiver = new SimWifiP2pBroadcastReceiver(this);
+        this.mReceiver = mReceiver;
+        mReceiver.setHandler(this);
         getContext().registerReceiver(mReceiver, filter);
     }
 
