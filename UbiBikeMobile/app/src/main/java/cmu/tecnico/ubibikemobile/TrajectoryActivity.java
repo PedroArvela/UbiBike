@@ -1,9 +1,13 @@
 package cmu.tecnico.ubibikemobile;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +25,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 import cmu.tecnico.ubibikemobile.asyncTasks.TrajectoryTask;
+import cmu.tecnico.ubibikemobile.helpers.GPSHandler;
 import cmu.tecnico.ubibikemobile.models.Trajectory;
 
 public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -60,7 +65,7 @@ public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyC
                         Toast.makeText(getBaseContext(), "Failed to get trajectory", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
-                    Log.e("MainActivity", "Error handling TrajectoryTask\n"+e.getMessage());
+                    Log.e("MainActivity", "Error handling TrajectoryTask\n" + e.getMessage());
                     Toast.makeText(getBaseContext(), "Failed to get trajectory", Toast.LENGTH_LONG).show();
                 }
             }
@@ -72,10 +77,19 @@ public class TrajectoryActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    123);
+        }
+        mMap.setMyLocationEnabled(true);
     }
 
     private void drawOnMap() {
-        if(mMap != null) {
+        if (mMap != null) {
             mMap.addPolyline(new PolylineOptions()
                     .addAll(trajectory.getTrajectory())
                     .width(4)
