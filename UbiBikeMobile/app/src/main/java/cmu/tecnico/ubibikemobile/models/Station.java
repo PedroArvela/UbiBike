@@ -44,7 +44,7 @@ public class Station {
         return true;
     }
 
-    public boolean pickupBike(boolean wasReserved) {
+    public boolean pickupBike() {
         if(freeBikes == 0)
             return false;
 

@@ -132,30 +132,36 @@ public class Server {
 			if (path.size() == 3 && manager.stations.containsKey(path.get(1))) {
 				Station station = manager.stations.get(path.get(1));
 				String action = path.get(2);
-				
-				if(action.equals("reserve")) {
-					boolean actionResult = false;
-					actionResult = station.reserveBike();
-					
-					if(actionResult)
-						result.add("true");
-					else
-						result.add("false");
-				}
-				else {
-					if(action.equals("cancel")) {
-						boolean actionResult = false;
-						actionResult = station.cancelBikeReservation();
 
-						if(actionResult)
-							result.add("true");
-						else
-							result.add("false");
-					} else {
-						code = 404;
-						result.add("Only 'reserve' and 'cancel' actions are available. Unknown '"+ action + "' action.");
-					}
+				boolean actionResult = false;
+				switch(action) {
+				case "reserve":
+					actionResult = station.reserveBike();
+					break;
+
+				case "cancel":
+					actionResult = station.cancelBikeReservation();
+					break;
+					
+				case "pickup":
+					actionResult = station.pickupBike();
+					break;
+					
+				case "dropoff":
+					station.dropoffBike();
+					actionResult = true;
+					break;
+					
+				default:
+					code = 404;
+					result.add("Unsupported action "+ action +" for Station");
 				}
+				
+				if(actionResult)
+					result.add("true");
+				else
+					result.add("false");
+
 			} else {
 				code = 404;
 				result.add("Station not found");
