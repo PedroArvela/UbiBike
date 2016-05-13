@@ -26,6 +26,7 @@ import java.util.Map;
 import cmu.tecnico.ubibikemobile.*;
 
 
+import cmu.tecnico.ubibikemobile.asyncTasks.SendPointsTask;
 import cmu.tecnico.wifiDirect.Message;
 import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
 import cmu.tecnico.wifiDirect.WifiHandler;
@@ -233,7 +234,11 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
     }
 
     private void addPoints(int pointsToadd) {
+        //add points locally
         ((App) appContext).getUser().points += pointsToadd;
+        //add points server
+        new SendPointsTask((App) appContext, currActivity.getResources(), ((App) appContext).getUser().username).execute(pointsToadd);
+        //update points on UI if its on the correct activity
         if (currActivity instanceof MainActivity)
             ((MainActivity) currActivity).pointsLbl.setText(Integer.toString(((App) appContext).getUser().points));
     }

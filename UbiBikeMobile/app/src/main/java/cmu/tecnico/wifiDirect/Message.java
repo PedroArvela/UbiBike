@@ -16,6 +16,7 @@ public class Message {
 
     public static final String TYPE_POINTS = "POINTS";
     public static final String TYPE_MSG = "MSG";
+    public static final String TYPE_NAME = "NAME";
 
     public Message(String type, String content, String toUser, String fromUser) {
         this.type = type;
