@@ -34,7 +34,7 @@ public class CyclistsList extends AppCompatActivity {
         final App app = (App) getApplicationContext();
         wifiHandler = app.getWifiHandler();
         app.getWifiHandler().currActivity = this;
-        wifiHandler.requestPeers();
+        wifiHandler.requestPeers(wifiHandler);
 
         cyclistsNames = new ArrayList<String>();
         cyclistsNames = wifiHandler.nearbyAvailable;

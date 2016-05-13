@@ -75,9 +75,9 @@ public class ConcreteWifiHandler implements SimWifiP2pManager.PeerListListener,S
         getContext().registerReceiver(mReceiver, filter);
     }
 
-    public void requestPeers() {
+    public void requestPeers(SimWifiP2pManager.PeerListListener listener) {
         if (mBound) {
-            mManager.requestPeers(mChannel, this);
+            mManager.requestPeers(mChannel, listener);
         } else {
             Log.d("WIFI_MANAGER", "Service not bound.");
         }
