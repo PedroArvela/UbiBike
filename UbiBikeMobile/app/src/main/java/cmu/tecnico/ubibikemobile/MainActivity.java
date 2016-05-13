@@ -56,16 +56,13 @@ public class MainActivity extends AppCompatActivity {
         if(app.getWifiHandler()==null)
             app.setWifiHandler(new ConcreteWifiHandler(getApplicationContext()));
 
-        if(app.getGpsHandler()==null) {
+        if(app.getGpsHandler()== null) {
             if ( ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            /*
-            ActivityCompat.requestPermissions(this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    LocationService.MY_PERMISSION_ACCESS_COURSE_LOCATION );
-            */
                 ActivityCompat.requestPermissions(this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                        2 ); //random number
+                        123 ); //random number
                 app.setGpsHandler(new GPSHandler(getApplicationContext()));
-            }
+            }else
+                app.setGpsHandler(new GPSHandler(getApplicationContext()));
         }
         app.getWifiHandler().currActivity = this;
         app.getWifiHandler().wifiOn();
