@@ -27,6 +27,7 @@ import cmu.tecnico.ubibikemobile.asyncTasks.PickupBikeTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.RegisterTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.SendPointsTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.StationListTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.TrajectorySendTask;
 import cmu.tecnico.ubibikemobile.models.Station;
 import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
 import cmu.tecnico.wifiDirect.WifiHandler;
@@ -135,6 +136,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                     Log.d("GPS","grabbed a bike");
                     new PickupBikeTask((App) appContext, appContext.getResources()).execute(station);
                     pickedBycicle = true;
+                    trajectory = new ArrayList<Location>();
                 }
 
                 //largou bicicleta
@@ -144,6 +146,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                     Toast.makeText(appContext, "dropped a bike",
                             Toast.LENGTH_SHORT).show();
                     new DropoffBikeTask((App) appContext, appContext.getResources()).execute(station);
+                    new TrajectorySendTask((App) appContext, appContext.getResources(), ((App) appContext).getUser().username).execute(getTrajectoryJson());
                     pickedBycicle = false;
                 }
             }

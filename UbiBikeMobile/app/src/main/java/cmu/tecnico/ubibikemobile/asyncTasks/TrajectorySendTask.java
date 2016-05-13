@@ -21,15 +21,13 @@ import cmu.tecnico.ubibikemobile.models.Trajectory;
 
 public class TrajectorySendTask extends AsyncTask<String, Boolean, Boolean> {
     App app;
-    Handler handler;
     Resources resources;
     String username;
 
     int responseCode = 0;
 
-    public TrajectorySendTask(App app, Handler handler, Resources resources, String username) {
+    public TrajectorySendTask(App app, Resources resources, String username) {
         this.app = app;
-        this.handler = handler;
         this.resources = resources;
         this.username = username;
     }
@@ -63,6 +61,5 @@ public class TrajectorySendTask extends AsyncTask<String, Boolean, Boolean> {
         int type = (result) ? App.MESSAGE_CONFIRM : App.MESSAGE_DENY;
         Message msg = Message.obtain(null, type);
 
-        handler.dispatchMessage(msg);
     }
 }
