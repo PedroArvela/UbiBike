@@ -31,17 +31,18 @@ import pt.inesc.termite.wifidirect.SimWifiP2pManager;
 public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListListener {
 //PeerListListener
 
+    final static int DISTANCE_TO_LEAVE_STATION = 10; //in meters
     final static String BEACON_NAME = "beacon";
     Context appContext;
-    ArrayList<LatLng> trajectory;
-    ArrayList<LatLng> bikeStations;
+    ArrayList<Location> trajectory;
+    ArrayList<Location> bikeStations;
 
     Boolean currHasBike;
     Boolean prevHasBike;
 
     public GPSHandler(Context appContext){
         this.appContext = appContext;
-        trajectory = new ArrayList<LatLng>();
+        trajectory = new ArrayList<Location>();
         currHasBike = false;
         prevHasBike = false;
 
@@ -56,19 +57,19 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
     public String getTrajectoryJson(){
         JSONArray jsonArray = new JSONArray();
         for(int i = 0; i < trajectory.size(); i++) {
-            jsonArray.put(trajectory.get(i).latitude+","+trajectory.get(i).longitude);
+            jsonArray.put(trajectory.get(i).getLatitude()+","+trajectory.get(i).getLongitude());
         }
         return jsonArray.toString();
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        LatLng ll = new LatLng(location.getLatitude(), location.getLongitude()); //nova posicao
+    public void onLocationChanged(Location location) {//nova posicao
         Log.d("GPS", "Location Changed " + location.toString());
 
         Boolean isNearStation = false;
         for(int i = 0; i < bikeStations.size(); i++){ //detectar se estiver perto de uma das estações
-            if(bikeStations.get(i) == ll){ //change
+            float[] results = new float[1];
+            if(location.distanceTo(bikeStations.get(i)) < DISTANCE_TO_LEAVE_STATION){ //change
                 isNearStation = true;
             }
         }
@@ -79,16 +80,19 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
             //apanhou bicicleta
             if(currHasBike && !prevHasBike){
                 //avisar servidor
+                Log.d("GPS","grabbed a bike");
                 prevHasBike = true;
             }
             //largou bicicleta
             if(!currHasBike && prevHasBike) {
                 //avisar servidor
+                Log.d("GPS","grabbed a bike");
             }
 
             //está a andar de bicicleta
             if(currHasBike && prevHasBike){
-                trajectory.add(ll); //guardar trajectoria
+                trajectory.add(location); //guardar trajectoria
+                Log.d("GPS","biking");
             }
         }
 
