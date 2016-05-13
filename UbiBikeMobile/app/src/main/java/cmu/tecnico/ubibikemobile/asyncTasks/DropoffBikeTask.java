@@ -16,14 +16,12 @@ import cmu.tecnico.ubibikemobile.models.Station;
 
 public class DropoffBikeTask extends AsyncTask<Station, Boolean, Boolean> {
     App app;
-    Handler handler;
     Resources resources;
 
     int responseCode = 0;
 
-    public DropoffBikeTask(App app, Handler handler, Resources resources) {
+    public DropoffBikeTask(App app, Resources resources) {
         this.app = app;
-        this.handler = handler;
         this.resources = resources;
     }
 
@@ -65,6 +63,5 @@ public class DropoffBikeTask extends AsyncTask<Station, Boolean, Boolean> {
         Message msg = Message.obtain(null, App.MESSAGE_STATIONS, result);
         msg.arg1 = responseCode;
 
-        handler.dispatchMessage(msg);
     }
 }

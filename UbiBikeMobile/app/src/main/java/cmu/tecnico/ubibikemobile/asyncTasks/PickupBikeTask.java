@@ -16,14 +16,12 @@ import cmu.tecnico.ubibikemobile.models.Station;
 
 public class PickupBikeTask extends AsyncTask<Station, Boolean, Boolean> {
     App app;
-    Handler handler;
     Resources resources;
 
     int responseCode = 0;
 
-    public PickupBikeTask(App app, Handler handler, Resources resources) {
+    public PickupBikeTask(App app, Resources resources) {
         this.app = app;
-        this.handler = handler;
         this.resources = resources;
     }
 
@@ -64,7 +62,5 @@ public class PickupBikeTask extends AsyncTask<Station, Boolean, Boolean> {
     protected void onPostExecute(Boolean result) {
         Message msg = Message.obtain(null, App.MESSAGE_STATIONS, result);
         msg.arg1 = responseCode;
-
-        handler.dispatchMessage(msg);
     }
 }

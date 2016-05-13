@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmu.tecnico.ubibikemobile.App;
+import cmu.tecnico.ubibikemobile.asyncTasks.DropoffBikeTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.PickupBikeTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.RegisterTask;
+import cmu.tecnico.ubibikemobile.asyncTasks.SendPointsTask;
 import cmu.tecnico.ubibikemobile.asyncTasks.StationListTask;
 import cmu.tecnico.ubibikemobile.models.Station;
 import cmu.tecnico.wifiDirect.SimWifiP2pBroadcastReceiver;
@@ -55,6 +58,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
     private Boolean hasBeaconNearby;
     private Boolean isInStation;
     private Boolean wasInStation;
+    private Station station;
     private Boolean pickedBycicle;
 
     public GPSHandler(Context appContext, SimWifiP2pBroadcastReceiver mReceiver){
@@ -117,6 +121,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
             float[] results = new float[1];
             if(location.distanceTo(bikeStationLocations.get(i)) < DISTANCE_TO_LEAVE_STATION){
                 isInStation = true;
+                station = bikeStations.get(i);
             }
         }
         if(!isInStation) { //se nao estiver na estação
@@ -128,6 +133,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                     Toast.makeText(appContext, "grabbed a bike",
                             Toast.LENGTH_SHORT).show();
                     Log.d("GPS","grabbed a bike");
+                    new PickupBikeTask((App) appContext, appContext.getResources()).execute(station);
                     pickedBycicle = true;
                 }
 
@@ -137,6 +143,7 @@ public class GPSHandler implements LocationListener, SimWifiP2pManager.PeerListL
                     Log.d("GPS","grabbed a bike");
                     Toast.makeText(appContext, "dropped a bike",
                             Toast.LENGTH_SHORT).show();
+                    new DropoffBikeTask((App) appContext, appContext.getResources()).execute(station);
                     pickedBycicle = false;
                 }
             }
