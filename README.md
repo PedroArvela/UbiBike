@@ -1,5 +1,5 @@
 # UbiBike
 
-Projecto de CMU
+Project for Ubiquous and Mobile Computing.
 
-* [Enunciado](http://www.gsd.inesc-id.pt/~wiki/courses/cmu1516/project/cmu2016-project-ubibike.pdf)
+**Warning**: This project is *highly insecure*. Do **not** store any passwords on it.
